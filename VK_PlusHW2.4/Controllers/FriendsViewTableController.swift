@@ -9,7 +9,6 @@ import UIKit
 import RealmSwift
 
 
-
 class FriendsViewTableController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIGestureRecognizerDelegate {
 
 
