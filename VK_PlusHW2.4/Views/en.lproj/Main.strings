@@ -1,0 +1,15 @@
+
+/* Class = "UIButton"; normalTitle = "Войти"; ObjectID = "2EP-6n-bYd"; */
+"2EP-6n-bYd.normalTitle" = "Войти";
+
+/* Class = "UILabel"; text = "a@a.com"; ObjectID = "Q13-KT-IQV"; */
+"Q13-KT-IQV.text" = "a@a.com";
+
+/* Class = "UILabel"; text = "12345678"; ObjectID = "hvB-l4-57z"; */
+"hvB-l4-57z.text" = "12345678";
+
+/* Class = "UILabel"; text = "Email или телефон"; ObjectID = "iTd-DB-S8c"; */
+"iTd-DB-S8c.text" = "Email или телефон";
+
+/* Class = "UILabel"; text = "Пароль"; ObjectID = "ocP-kv-TcO"; */
+"ocP-kv-TcO.text" = "Пароль";
