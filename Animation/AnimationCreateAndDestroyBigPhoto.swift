@@ -62,3 +62,49 @@ import UIKit
     }
         
 }
+
+
+class AnimationDestroyBigPhoto: NSObject, UIViewControllerAnimatedTransitioning {
+    
+    let animationTime : TimeInterval = 1.5
+    
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+        animationTime
+    }
+
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        
+        AllPhotoOfFriendViewController.destroyPhoto = false
+
+        guard let source = transitionContext.viewController(forKey: .from),
+              let destination = transitionContext.viewController(forKey: .to)
+        else {return}
+
+        transitionContext.containerView.addSubview(destination.view)
+
+        destination.view.alpha = 0
+
+    guard let bigPhotoViewController = source as? AllPhotoOfFriendViewController
+    else {return}
+
+        
+    let widthNewPhoto = bigPhotoViewController.centerPhoto.bounds.width/10
+    let heightNewPhoto = bigPhotoViewController.centerPhoto.bounds.height/10
+        let newPozitionPhoto = CGPoint(x: bigPhotoViewController.centerPhoto.bounds.width/2 - widthNewPhoto, y: -bigPhotoViewController.centerPhoto.bounds.height/10)
+        
+    UIView.animate(withDuration: 1,
+                   delay: 0,
+                   options: [],
+                   animations: {
+                   bigPhotoViewController.centerPhoto.frame = CGRect(x: newPozitionPhoto.x, y: newPozitionPhoto.y, width: widthNewPhoto, height: heightNewPhoto)
+                    
+                    destination.view.alpha = 1
+                    source.view.alpha = 0
+                   },
+                   completion: {complete in
+                    source.view.alpha = 1
+                    transitionContext.completeTransition(complete && !transitionContext.transitionWasCancelled)
+                   })
+    }
+    
+}

@@ -6,26 +6,21 @@
 //
 
 import UIKit
+import RealmSwift
 
 class AllGroupsTableController: UITableViewController {
 
-//    var allGroups = [
-//    Group(imageGroup: UIImage(named: "Audi")!, nameGroup: "Группа любителей ауди"),
-//    Group(imageGroup: UIImage(named: "Mercedes")!, nameGroup: "Группа любителей мерседесов"),
-//    Group(imageGroup: UIImage(named: "Jaguar")!, nameGroup: "Группа любителей ягуаров"),
-//    Group(imageGroup: UIImage(named: "Mini")!, nameGroup: "Группа любителей мини"),
-//    Group(imageGroup: UIImage(named: "Mustang")!, nameGroup: "Группа любителей мустангов"),
-//    ]
-
+    private let networkService = MainNetworkService()
+    var allGroupsInRealm = try? RealmService.load(typeOf: RealmAllGroups.self, sortedKey: "idGroup")
+    var token: NotificationToken?
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return allGroups.count
+        return allGroupsInRealm?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendAndGroupCell", for: indexPath) as! FriendAndGroupCell
-        cell.imageOfFriendOrGroup.image = allGroups[indexPath.row].imageGroup
-        cell.nameOfFriendOrGroup.text = allGroups[indexPath.row].nameGroup
+        cell.configure(imageURL: allGroupsInRealm![indexPath.row].imageGroupURL, name: allGroupsInRealm![indexPath.row].nameGroup)
         return cell
     }
     
@@ -37,7 +32,36 @@ class AllGroupsTableController: UITableViewController {
         super.viewDidLoad()
         let nib = UINib(nibName: "FriendAndGroupCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "FriendAndGroupCell")
+        loadAndSaveAllGroupsInRealm()
 
+    }
+    
+    private func updateTableViewFromRealm() {
+        guard let allGroupsInRealm = self.allGroupsInRealm else {return}
+        
+        self.token = allGroupsInRealm.observe { [self]  (changes: RealmCollectionChange) in
+                    switch changes {
+                    case .initial:
+                                    self.tableView.reloadData()
+                    case .update(_, let deletions, let insertions, let modifications):
+                       
+                                    self.tableView.reloadData()
+                    case .error(let error):
+                        print(error)
+                    }
+                }
+
+    }
+    
+    private func loadAndSaveAllGroupsInRealm(){
+        networkService.groupsSearch(textForSearch: "Music", numberGroups: 10, completion: { allSearchedGroups in
+            guard
+                let allSearchGroupsVK = allSearchedGroups
+            else {return}
+            try? RealmService.save(items: allSearchGroupsVK)
+            self.tableView.reloadData()
+            self.updateTableViewFromRealm()
+        })
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

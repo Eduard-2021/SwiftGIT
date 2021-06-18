@@ -5,4 +5,13 @@
 //  Created by Eduard on 25.05.2021.
 //
 
-import Foundation
+enum PathOfMethodsVK: String {
+    case getFriends = "friends.get"
+    case getAllPhotos = "photos.getAll"
+    case getGroupsUser = "groups.get"
+    case groupsSearch = "groups.search"
+    
+}
+
+
+

@@ -7,10 +7,11 @@
 
 import RealmSwift
 
-class RealmUserPhotos: Object {
+class RealmUserPhoto: Object {
+    @objc dynamic var idUser: Int = 0
     @objc dynamic var serialNumberPhoto: Int = 0
     @objc dynamic var idPhoto: Int = 0
-    var image = List<SizeVK>()
+    @objc dynamic var URLimage: String = ""
     @objc dynamic var numLikes: Int = 0
     @objc dynamic var i_like: Bool = false
 
@@ -23,32 +24,15 @@ class RealmUserPhotos: Object {
 //    }
 }
 
-extension RealmUserPhotos {
-    convenience init(_ onePhoto: OnePhoto, _ allSizesOfImage: List<SizeVK>, _ likesVK: LikesVK) {
+extension RealmUserPhoto {
+    convenience init(_ idUser: Int, _ onePhoto: OnePhoto, _ URLimage: String, _ likesVK: LikesVK) {
         self.init()
+        self.idUser = idUser
         self.serialNumberPhoto = 0
         self.idPhoto = onePhoto.idPhoto
-        self.image = allSizesOfImage
+        self.URLimage = URLimage
         self.numLikes = likesVK.count
         self.i_like = likesVK.userLikes == 1
-    }
-}
-
-
-class SizeVK: Object {
-    @objc dynamic var height : Int = 0
-    @objc dynamic var url : String = ""
-    @objc dynamic var type : String = ""
-    @objc dynamic var width : Int = 0
-}
-
-extension SizeVK {
-    convenience init(_ oneSizePhoto: Size) {
-        self.init()
-        self.height = oneSizePhoto.height
-        self.url = oneSizePhoto.url
-        self.type = oneSizePhoto.type
-        self.width = oneSizePhoto.width
     }
 }
 

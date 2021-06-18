@@ -5,13 +5,13 @@
 //  Created by Eduard on 02.06.2021.
 //
 
-struct VKActiveGroup {
+struct VKGroup {
     let idGroup : Int
     let nameGroup: String
     let imageGroup : String
 }
 
-extension VKActiveGroup: Codable {
+extension VKGroup: Codable {
     enum CodingKeys: String, CodingKey {
         case idGroup = "id"
         case nameGroup = "name"

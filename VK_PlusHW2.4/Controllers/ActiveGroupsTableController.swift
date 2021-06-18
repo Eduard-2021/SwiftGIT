@@ -6,35 +6,26 @@
 //
 
 import UIKit
+import RealmSwift
 
 class ActiveGroupsTableController: UITableViewController, UISearchBarDelegate {
     
-//    var activeGroups = [
-//    Group(imageGroup: UIImage(named: "Audi")!, nameGroup: "Группа любителей ауди"),
-//    Group(imageGroup: UIImage(named: "Mercedes")!, nameGroup: "Группа любителей мерседесов"),
-//    ]
+    private let networkService = MainNetworkService()
+    var usersGroupsInRealm = try? RealmService.load(typeOf: RealmActiveGroups.self, sortedKey: "idGroup")
+    var usersGroupsInRealmOrigin = try? RealmService.load(typeOf: RealmActiveGroupsOrigin.self, sortedKey: "idGroup")
+    var token: NotificationToken?
+    
     @IBOutlet weak var searchBarText: UISearchBar!
     
-    var choosedActiveGroups: [Group]!
-    var searchActive = false
-    
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchActive {
-            return choosedActiveGroups.count
-        }
-        else {
-            return activeGroups.count
-        }
+            return usersGroupsInRealm?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var workArray = activeGroups
-        if searchActive {workArray = choosedActiveGroups}
+        guard let workArray = usersGroupsInRealm else {return UITableViewCell()}
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendAndGroupCell", for: indexPath) as! FriendAndGroupCell
-        cell.imageOfFriendOrGroup.image = workArray[indexPath.row].imageGroup
-        cell.nameOfFriendOrGroup.text = workArray[indexPath.row].nameGroup
+        cell.configure(imageURL: workArray[indexPath.row].imageGroupURL, name: workArray[indexPath.row].nameGroup)
         cell.accessoryType = .disclosureIndicator
         return cell
     }
@@ -46,24 +37,45 @@ class ActiveGroupsTableController: UITableViewController, UISearchBarDelegate {
                 let allGroupsTableController = segue.source as? AllGroupsTableController,
                 let indexPath = allGroupsTableController.tableView.indexPathForSelectedRow
             else {return}
-            if !activeGroups.contains(allGroups[indexPath.row]) {
-                activeGroups.append(allGroups[indexPath.row])
+        
+        let newGroup = RealmActiveGroups()
+        newGroup.idGroup = allGroupsTableController.allGroupsInRealm![indexPath.row].idGroup
+        newGroup.imageGroupURL = allGroupsTableController.allGroupsInRealm![indexPath.row].imageGroupURL
+        newGroup.nameGroup = allGroupsTableController.allGroupsInRealm![indexPath.row].nameGroup
+        
+        if !usersGroupsInRealm!.contains(newGroup) {
+            try? RealmService.save(items: [newGroup])
             tableView.reloadData()
             }
     }
 
+    
+    private func updateTableViewFromRealm() {
+        guard let usersGroupsInRealm = self.usersGroupsInRealm else {return}
+        
+        self.token = usersGroupsInRealm.observe { [self]  (changes: RealmCollectionChange) in
+                    switch changes {
+                    case .initial:
+                                    self.tableView.reloadData()
+                    case .update(_, let deletions, let insertions, let modifications):
+                       
+                                    self.tableView.reloadData()
+                    case .error(let error):
+                        print(error)
+                    }
+                }
+
+    }
+    
     override func tableView(_ tableView: UITableView,
                             commit editingStyle: UITableViewCell.EditingStyle,
                             forRowAt indexPath: IndexPath) {
-    
+        let realm = try! Realm()
         if editingStyle == .delete {
-            if searchActive {
-                activeGroups.remove(at: activeGroups.firstIndex(of: choosedActiveGroups[indexPath.row])!)
-                choosedActiveGroups.remove(at: indexPath.row)
-            }
-            else {
-                activeGroups.remove(at: indexPath.row)
-                
+            if let groupForDelete = usersGroupsInRealm?[indexPath.row] {
+                try! realm.write {
+                                realm.delete(groupForDelete)
+                            }
             }
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
@@ -78,38 +90,68 @@ class ActiveGroupsTableController: UITableViewController, UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText != "" {
-            searchActive = true
-        }
-        else {
-            searchActive = false
-            
-        }
-        choosedActiveGroups = activeGroups
-        var newChoosedActiveGroups = [Group]()
-        
-        for group in choosedActiveGroups {
-            if group.nameGroup.lowercased().contains(searchText.lowercased()) {
-                newChoosedActiveGroups.append(group)
+        var choosedActiveGroupsFromOrigin = [RealmActiveGroupsOrigin]()
+        guard let usersGroupsOriginUnwrap = usersGroupsInRealmOrigin else {return}
+        for value in usersGroupsOriginUnwrap {
+            if value.nameGroup.lowercased().contains(searchText.lowercased()){
+                choosedActiveGroupsFromOrigin.append(value)
             }
         }
-        if newChoosedActiveGroups.count != 0 {
-            choosedActiveGroups = newChoosedActiveGroups
+        
+        if searchText != "" {
+            guard let usersGroupsUnwrap = usersGroupsInRealm else {return}
+            try? RealmService.delete(object: usersGroupsUnwrap)
+            let choosedActiveGroups = self.loadOriginActiveGroups(choosedActiveGroupsFromOrigin)
+            try? RealmService.save(items: choosedActiveGroups)
+        }
+        else {
+            guard let usersGroupsUnwrap = usersGroupsInRealm else {return}
+            try? RealmService.delete(object: usersGroupsUnwrap)
+            choosedActiveGroupsFromOrigin = []
+            for value in usersGroupsOriginUnwrap {
+                choosedActiveGroupsFromOrigin.append(value)
+            }
+            let choosedActiveGroups = self.loadOriginActiveGroups(choosedActiveGroupsFromOrigin)
+            try? RealmService.save(items: choosedActiveGroups)
         }
         
         tableView.reloadData()
     }
+    
+    private func loadOriginActiveGroups(_ usersGroupsInRealm: [RealmActiveGroupsOrigin]) -> [RealmActiveGroups] {
+        var userGroups = [RealmActiveGroups]()
+        for (index,value) in usersGroupsInRealm.enumerated() {
+            userGroups.append(RealmActiveGroups())
+            userGroups[index].idGroup = value.idGroup
+            userGroups[index].imageGroupURL = value.imageGroupURL
+            userGroups[index].nameGroup = value.nameGroup
+        }
+        return userGroups
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let nib = UINib(nibName: "FriendAndGroupCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "FriendAndGroupCell")
         searchBarText.delegate = self
-        choosedActiveGroups = activeGroups
+        loadUserGroupsInRealm()
         navigationController?.delegate = self
         
     }
     
+    private func loadUserGroupsInRealm() {
+            networkService.getGroupsOfUser(userId: DataAboutSession.data.userID) {[weak self] userGroupsVK, userGroupsVKOrigin in
+                guard
+                    let vkUserGroups = userGroupsVK,
+                    let vkUserGroupsOrigin = userGroupsVKOrigin
+                else { return }
+                try? RealmService.save(items: vkUserGroups)
+                try? RealmService.save(items: vkUserGroupsOrigin)
+                self!.tableView.reloadData()
+                self!.updateTableViewFromRealm()
+            }
+    }
 }
 
 

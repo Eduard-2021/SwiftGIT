@@ -9,7 +9,6 @@ import UIKit
 
 class AllPhotoOfFriendViewController: UIViewController {
     
-    var photosOfSelectedFriend : [Likes]!
     var leftPhoto = UIImageView()
     var centerPhoto = UIImageView()
     var rightPhoto = UIImageView()
@@ -19,6 +18,11 @@ class AllPhotoOfFriendViewController: UIViewController {
     var speedOfMovePhoto : CGFloat = 0
     let pozitionY : CGFloat = 100
     static var destroyPhoto = false
+    
+    var selectedUser : Int!
+    
+    private let networkService = MainNetworkService()
+    var realmUserPhotos = try? RealmService.load(typeOf: RealmUserPhoto.self, sortedKey: "serialNumberPhoto")
     
     enum DirectionMove {
         case left
@@ -34,23 +38,24 @@ class AllPhotoOfFriendViewController: UIViewController {
         rightPhoto.frame = CGRect(x: self.view.bounds.width, y: pozitionY, width: self.view.bounds.width, height: self.view.bounds.width)
         centerPhoto.frame = CGRect(x: 0, y: pozitionY, width: self.view.bounds.width, height: self.view.bounds.width)
         
+        guard let realmCurrentUserPhotos = realmUserPhotos?.filter("idUser == %@", selectedUser as Any) else {return}
         numberPhoto = FriendInfoCollectionController.numberOfPhoto
-        centerPhoto.image = photosOfSelectedFriend[numberPhoto].image
+        centerPhoto.kf.setImage(with: URL(string: realmCurrentUserPhotos[numberPhoto].URLimage))
         
-        switch (photosOfSelectedFriend.count, numberPhoto) {
+        switch (realmCurrentUserPhotos.count, numberPhoto) {
             case (2,0) :
-                rightPhoto.image = photosOfSelectedFriend[1].image
+                rightPhoto.kf.setImage(with: URL(string: realmCurrentUserPhotos[1].URLimage))
             case (2,1) :
-                leftPhoto.image = photosOfSelectedFriend[0].image
+                leftPhoto.kf.setImage(with: URL(string: realmCurrentUserPhotos[0].URLimage))
             case (3,1) :
-                rightPhoto.image = photosOfSelectedFriend[2].image
-                leftPhoto.image = photosOfSelectedFriend[0].image
+                rightPhoto.kf.setImage(with: URL(string: realmCurrentUserPhotos[2].URLimage))
+                leftPhoto.kf.setImage(with: URL(string: realmCurrentUserPhotos[0].URLimage))
         default:
-            if numberPhoto != photosOfSelectedFriend.count-1 {
-            rightPhoto.image = photosOfSelectedFriend[numberPhoto+1].image
+            if numberPhoto != realmCurrentUserPhotos.count-1 {
+            rightPhoto.kf.setImage(with: URL(string: realmCurrentUserPhotos[numberPhoto+1].URLimage))
             }
             if numberPhoto != 0 {
-            leftPhoto.image = photosOfSelectedFriend[numberPhoto-1].image
+            leftPhoto.kf.setImage(with: URL(string: realmCurrentUserPhotos[numberPhoto-1].URLimage))
             }
         }
         
@@ -67,27 +72,23 @@ class AllPhotoOfFriendViewController: UIViewController {
         centerPhoto.addGestureRecognizer(panGesture)
         
         factor = self.view.bounds.width/100
-        
-//        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(didSwipe(_:)))
-//        swipeGesture.direction = [.down, .up]
-//        centerPhoto.addGestureRecognizer(swipeGesture)
     }
     
     @objc func didPan(_ sender:UIPanGestureRecognizer) {
         
         let newPosition = sender.translation(in: self.view)
         let changeX = newPosition.x/factor
+        guard let realmCurrentUserPhotos = realmUserPhotos?.filter("idUser == %@", selectedUser as Any) else {return}
         
         if abs(newPosition.y) > abs(newPosition.x*2) {
             AllPhotoOfFriendViewController.destroyPhoto = true
             navigationController?.popToRootViewController(animated: true)
-//            performSegue(withIdentifier: "closePhotoOfFriend", sender: nil)
             return
         }
         
             switch (sender.state, changeX>0) {
                 case (.began, false) :
-                  if numberPhoto+1 < photosOfSelectedFriend.count {
+                  if numberPhoto+1 < realmCurrentUserPhotos.count {
                     mainAction(directionMove: .left)
                   }
                       else {
@@ -121,51 +122,10 @@ class AllPhotoOfFriendViewController: UIViewController {
     }
     
     
-//    @objc func didSwipe(_ sender:UIPanGestureRecognizer) {
-        
-//        let newPosition = sender.translation(in: self.view)
-//        let changeX = newPosition.x/factor
-        
-//        performSegue(withIdentifier: "closePhotoOfFriend", sender: nil)
-        
-//            switch sender.state {
-//                case (.began, false) :
-//                  if numberPhoto+1 < photosOfSelectedFriend.count {
-//                    mainAction(directionMove: .left)
-//                  }
-//                      else {
-//                        animationFirstAndLastPhoto()
-//                      }
-//                    
-//                case (.changed, false) :
-//                    interactiveAnimator.fractionComplete = -changeX / 100
-//                case (.ended, false):
-//                    interactiveAnimator.continueAnimation(
-//                        withTimingParameters: nil,
-//                        durationFactor: speedOfMovePhoto)
-//                case (.began, true) :
-//                  if  numberPhoto > 0 {
-//                    mainAction(directionMove: .right)
-//                  }
-//                    else {
-//                        animationFirstAndLastPhoto()
-//                    }
-//                    
-//                case (.changed, true) :
-//                    interactiveAnimator.fractionComplete = changeX / 100
-//                case (.ended, true):
-//                    interactiveAnimator.continueAnimation(
-//                        withTimingParameters: nil,
-//                        durationFactor: speedOfMovePhoto)
-//                default :
-//                    return
-//                }
-        
-//    }
-    
     func mainAction(directionMove : DirectionMove) {
         
         var byXCenter : CGFloat
+        guard let realmCurrentUserPhotos = realmUserPhotos?.filter("idUser == %@", selectedUser as Any) else {return}
         
         if directionMove == .left {
             rightPhoto.isHidden = false
@@ -211,24 +171,24 @@ class AllPhotoOfFriendViewController: UIViewController {
                                         if directionMove == .left {
                                             self.rightPhoto.transform = .identity
                                             self.rightPhoto.isHidden = true
-                                            self.leftPhoto.image = photosOfSelectedFriend[numberPhoto].image
+                                            self.leftPhoto.kf.setImage(with: URL(string: realmCurrentUserPhotos[numberPhoto].URLimage))
                                             numberPhoto += 1
-                                            if numberPhoto+1 < photosOfSelectedFriend.count {
-                                                self.rightPhoto.image = photosOfSelectedFriend[numberPhoto+1].image
+                                            if numberPhoto+1 < realmCurrentUserPhotos.count {
+                                                self.rightPhoto.kf.setImage(with: URL(string: realmCurrentUserPhotos[numberPhoto+1].URLimage))
                                             }
                                         }
                                             else {
                                                 self.leftPhoto.transform = .identity
                                                 self.leftPhoto.isHidden = true
-                                                self.rightPhoto.image = photosOfSelectedFriend[numberPhoto].image
+                                                self.rightPhoto.kf.setImage(with: URL(string: realmCurrentUserPhotos[numberPhoto].URLimage))
                                                 numberPhoto -= 1
                                                 if numberPhoto > 0 {
-                                                    self.leftPhoto.image = photosOfSelectedFriend[numberPhoto-1].image
+                                                    self.leftPhoto.kf.setImage(with: URL(string: realmCurrentUserPhotos[numberPhoto-1].URLimage))
                                                 }
                                                 
                                             }
                                         
-                                        self.centerPhoto.image = photosOfSelectedFriend[numberPhoto].image
+                                        self.centerPhoto.kf.setImage(with: URL(string: realmCurrentUserPhotos[numberPhoto].URLimage))
                                         self.centerPhoto.frame = CGRect(x: 0, y: pozitionY, width: self.view.bounds.width, height: self.view.bounds.width)
                                         self.leftPhoto.frame = CGRect(x: -self.view.bounds.width, y: pozitionY, width: self.view.bounds.width, height: self.view.bounds.width)
                                         self.rightPhoto.frame = CGRect(x: self.view.bounds.width, y: pozitionY, width: self.view.bounds.width, height: self.view.bounds.width)

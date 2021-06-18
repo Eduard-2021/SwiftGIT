@@ -5,4 +5,7 @@
 //  Created by Eduard on 31.05.2021.
 //
 
-import Foundation
+struct AllPhotoOfFriend: Codable {
+    let count: Int
+    let items: [OnePhoto]
+}

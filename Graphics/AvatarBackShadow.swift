@@ -7,14 +7,21 @@
 
 import UIKit
 
-class AvatarBackShadow: UIView {
+@IBDesignable class AvatarBackShadow: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    @IBInspectable var shadowColor: UIColor = .lightGray
+    @IBInspectable var shadowOffset: CGSize = CGSize(width: 5.0, height: 5)
+    @IBInspectable var shadowOpacity: Float = 0.9
+    @IBInspectable var shadowRadius: CGFloat = 3
+    
+    
+    override func awakeFromNib() {
+        self.backgroundColor = .clear
+        self.layer.shadowColor = shadowColor.cgColor
+        self.layer.shadowOffset = shadowOffset
+        self.layer.shadowOpacity = shadowOpacity
+        self.layer.shadowRadius = shadowRadius
+        
+    
     }
-    */
-
 }

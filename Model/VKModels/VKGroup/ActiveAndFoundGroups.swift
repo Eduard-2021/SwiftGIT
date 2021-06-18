@@ -5,7 +5,7 @@
 //  Created by Eduard on 02.06.2021.
 //
 
-struct ActiveGroups: Codable {
+struct ActiveAndFoundGroups: Codable {
     let count: Int
     let items:[VKGroup]
 }

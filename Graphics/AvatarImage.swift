@@ -7,14 +7,16 @@
 
 import UIKit
 
-class AvatarImage: UIImageView {
+@IBDesignable class AvatarImage: UIImageView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    @IBInspectable var borderColor: UIColor = .darkGray
+    @IBInspectable var borderWidth: CGFloat = 1.5
+    @IBInspectable var cornerRadius: CGFloat = 40
+    
+    override func awakeFromNib() {
+        self.layer.cornerRadius = cornerRadius
+        self.layer.masksToBounds = true
+        self.layer.borderWidth = borderWidth
+        self.layer.borderColor = borderColor.cgColor
     }
-    */
-
 }

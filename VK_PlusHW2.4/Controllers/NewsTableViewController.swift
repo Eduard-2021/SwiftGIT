@@ -11,10 +11,10 @@ class NewsTableViewController: UITableViewController {
     
 
     static var news : [News] =
-        [News(avatarPhoto : UIImage(named: "1")!, avatarName: "Алексей Алексеев", date: "12.04.2021", photo: UIImage(named: "Nature1")!, Comment: "Первый информационный пост", numberOfLiles: 5, iLike: true, numberOfViews: 30),
-         News(avatarPhoto : UIImage(named: "2")!, avatarName: "Богдан Богданов", date: "14.04.2021", photo: UIImage(named: "Nature2")!, Comment: "Второй информационный пост", numberOfLiles: 12, iLike: false, numberOfViews: 43),
-         News(avatarPhoto : UIImage(named: "3")!, avatarName: "Валентин Валентинов", date: "17.04.2021", photo: UIImage(named: "Nature3")!, Comment: "Третий информационный пост", numberOfLiles: 6, iLike: true, numberOfViews: 20),
-         News(avatarPhoto : UIImage(named: "4")!, avatarName: "Глеб Глебов", date: "18.04.2021", photo: UIImage(named: "Nature4")!, Comment: "Четверный информационный пост", numberOfLiles: 10, iLike: false, numberOfViews: 15),]
+        [News(avatarPhoto : UIImage(named: "1")!, avatarName: "1", date: "12.04.2021", photo: UIImage(named: "1")!, Comment: "Первый информационный пост", numberOfLiles: 5, iLike: true, numberOfViews: 30),
+         News(avatarPhoto : UIImage(named: "1")!, avatarName: "1", date: "14.04.2021", photo: UIImage(named: "1")!, Comment: "Второй информационный пост", numberOfLiles: 12, iLike: false, numberOfViews: 43),
+         News(avatarPhoto : UIImage(named: "1")!, avatarName: "1", date: "17.04.2021", photo: UIImage(named: "1")!, Comment: "Третий информационный пост", numberOfLiles: 6, iLike: true, numberOfViews: 20),
+         News(avatarPhoto : UIImage(named: "1")!, avatarName: "1", date: "18.04.2021", photo: UIImage(named: "1")!, Comment: "Четверный информационный пост", numberOfLiles: 10, iLike: false, numberOfViews: 15),]
     
 //    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 //       500.0

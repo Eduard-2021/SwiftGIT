@@ -7,6 +7,7 @@
 
 import UIKit
 import WebKit
+import RealmSwift
 
 class VKLoginPasswordViewController: UIViewController {
     
@@ -66,7 +67,7 @@ class VKLoginPasswordViewController: UIViewController {
         super.viewDidLoad()
         webView.navigationDelegate = self
         webView.load(request)
-        logOutSegue()
+//        logOutSegue()
         loadAnimation()
         cloud.isHidden = true
         loading.isHidden = true
@@ -214,15 +215,8 @@ extension VKLoginPasswordViewController: WKNavigationDelegate {
         DataAboutSession.data.userID = 647133643
         DataAboutSession.data.token = "e9ba8e3e913f26b137480ac4c451c1fec43f371219a0602b200771bde81bb9980ab4b12579cc129dc4feb"
         
-        MainNetworkService().getUserFriends()
-        while (friends.count == 0) || (friends.count < numberOfFriends) {}
-
-        MainNetworkService().getGroupsOfUser(userId: DataAboutSession.data.userID)
-        while (activeGroups.count == 0) || (activeGroups.count < numberOfGroups) {}
+        try? FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
         
-        MainNetworkService().groupsSearch(textForSearch: "Музыка", numberGroups: 5)
-        while (allGroups.count == 0) || (allGroups.count < numberOfFoundGroups) {}
-      
         performSegue(withIdentifier: "showSecondWindow", sender: nil)
         stopAnimation()
         decisionHandler(.cancel)

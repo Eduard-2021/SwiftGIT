@@ -12,7 +12,7 @@
         <!--Login Password View Controller-->
         <scene sceneID="wmz-Nt-Lsn">
             <objects>
-                <viewController id="UiA-Dj-Vwv" customClass="VKLoginPasswordViewController" customModule="VK_PlusHW2_3" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="UiA-Dj-Vwv" customClass="VKLoginPasswordViewController" customModule="VK_PlusHW2_4" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MNR-oB-gLj">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -63,7 +63,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="VK_PlusHW2_3" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="VK_PlusHW2_4" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -185,7 +185,7 @@
         <!--Friends View Table Controller-->
         <scene sceneID="p6g-i2-ryZ">
             <objects>
-                <viewController storyboardIdentifier="FriendsTableController" modalPresentationStyle="fullScreen" id="hWU-6V-pMu" customClass="FriendsViewTableController" customModule="VK_PlusHW2_3" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FriendsTableController" modalPresentationStyle="fullScreen" id="hWU-6V-pMu" customClass="FriendsViewTableController" customModule="VK_PlusHW2_4" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5DI-Pt-hjY">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -195,24 +195,20 @@
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="i2q-DV-3F3">
-                                <rect key="frame" x="9" y="115" width="410" height="479"/>
+                                <rect key="frame" x="9" y="115" width="410" height="674"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="hWU-6V-pMu" id="rkh-rA-dQX"/>
                                     <outlet property="delegate" destination="hWU-6V-pMu" id="27P-Ai-zXv"/>
                                 </connections>
                             </tableView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8O8-6M-CDK">
-                                <rect key="frame" x="150" y="625" width="128" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="YsN-iB-5OV"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="YsN-iB-5OV" firstAttribute="trailing" secondItem="B2f-qx-Osn" secondAttribute="trailing" id="1Tp-LH-ECc"/>
                             <constraint firstItem="B2f-qx-Osn" firstAttribute="top" secondItem="YsN-iB-5OV" secondAttribute="top" constant="3" id="1y6-Wm-XDM"/>
-                            <constraint firstAttribute="bottom" secondItem="i2q-DV-3F3" secondAttribute="bottom" constant="278" id="BH8-bI-6kW"/>
+                            <constraint firstAttribute="bottom" secondItem="i2q-DV-3F3" secondAttribute="bottom" constant="83" id="BH8-bI-6kW"/>
                             <constraint firstItem="i2q-DV-3F3" firstAttribute="leading" secondItem="YsN-iB-5OV" secondAttribute="leading" constant="9" id="CgZ-aK-exf"/>
                             <constraint firstItem="i2q-DV-3F3" firstAttribute="top" secondItem="YsN-iB-5OV" secondAttribute="top" constant="59" id="GGp-DI-AwG"/>
                             <constraint firstItem="YsN-iB-5OV" firstAttribute="trailing" secondItem="i2q-DV-3F3" secondAttribute="trailing" constant="9" id="Mpj-RK-M9E"/>
@@ -220,14 +216,25 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="VXX-j9-XzY">
-                        <barButtonItem key="leftBarButtonItem" image="arrowshape.turn.up.backward.fill" catalog="system" id="Jad-En-2Ze">
+                        <leftBarButtonItems>
+                            <barButtonItem image="arrowshape.turn.up.backward.fill" catalog="system" id="Jad-En-2Ze">
+                                <connections>
+                                    <segue destination="v25-Jh-wif" kind="unwind" unwindAction="unwindSwgueFor:" id="Xpf-ay-u8s"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Add Realm Object" id="xRo-rN-lfA">
+                                <connections>
+                                    <action selector="addRealmObject:" destination="hWU-6V-pMu" id="L2P-t0-etu"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" title="Delete Realm Object" id="xr4-bL-RaP">
                             <connections>
-                                <segue destination="v25-Jh-wif" kind="unwind" unwindAction="unwindSwgueFor:" id="Xpf-ay-u8s"/>
+                                <action selector="deleteRealmObject:" destination="hWU-6V-pMu" id="XyN-Ze-tQS"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="photoTest" destination="8O8-6M-CDK" id="inj-nR-nR4"/>
                         <outlet property="searchBarForFriends" destination="B2f-qx-Osn" id="avY-Z5-V9M"/>
                         <outlet property="tableView" destination="i2q-DV-3F3" id="bwi-xn-NRQ"/>
                         <segue destination="7DZ-yH-5fx" kind="show" identifier="SeePhoto" id="jjX-ca-THs"/>
@@ -241,7 +248,7 @@
         <!--Active Groups Table Controller-->
         <scene sceneID="9Ms-ka-AsA">
             <objects>
-                <tableViewController modalPresentationStyle="fullScreen" id="qSO-nw-tp2" customClass="ActiveGroupsTableController" customModule="VK_PlusHW2_3" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController modalPresentationStyle="fullScreen" id="qSO-nw-tp2" customClass="ActiveGroupsTableController" customModule="VK_PlusHW2_4" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="pXt-XV-1o1">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -283,7 +290,7 @@
         <!--All Groups Table Controller-->
         <scene sceneID="zne-s7-u47">
             <objects>
-                <tableViewController modalPresentationStyle="fullScreen" id="9Wy-Fn-8oQ" customClass="AllGroupsTableController" customModule="VK_PlusHW2_3" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController modalPresentationStyle="fullScreen" id="9Wy-Fn-8oQ" customClass="AllGroupsTableController" customModule="VK_PlusHW2_4" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="STY-3t-r1H">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -306,7 +313,7 @@
         <!--Friends-->
         <scene sceneID="dBk-gZ-pRJ">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ddv-IF-jmM" customClass="NavigationControllerForAnimation" customModule="VK_PlusHW2_3" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ddv-IF-jmM" customClass="NavigationControllerForAnimation" customModule="VK_PlusHW2_4" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Friends" image="person.fill" catalog="system" id="jtd-ve-bkD"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="UDu-Tr-OSj">
@@ -344,7 +351,7 @@
         <!--Friend Info Collection Controller-->
         <scene sceneID="EkZ-3R-bOK">
             <objects>
-                <collectionViewController id="7DZ-yH-5fx" customClass="FriendInfoCollectionController" customModule="VK_PlusHW2_3" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController id="7DZ-yH-5fx" customClass="FriendInfoCollectionController" customModule="VK_PlusHW2_4" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="syX-0Y-4Rw">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -382,7 +389,7 @@
         <!--All Photo Of Friend View Controller-->
         <scene sceneID="cpU-SZ-MK4">
             <objects>
-                <viewController storyboardIdentifier="AllPhotoOfFriendViewController" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VqJ-Yc-3lN" customClass="AllPhotoOfFriendViewController" customModule="VK_PlusHW2_3" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AllPhotoOfFriendViewController" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VqJ-Yc-3lN" customClass="AllPhotoOfFriendViewController" customModule="VK_PlusHW2_4" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8uF-t5-5El">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -402,7 +409,7 @@
         <!--News Table View Controller-->
         <scene sceneID="YDI-OB-977">
             <objects>
-                <tableViewController modalPresentationStyle="fullScreen" id="YFf-ml-qeb" customClass="NewsTableViewController" customModule="VK_PlusHW2_3" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController modalPresentationStyle="fullScreen" id="YFf-ml-qeb" customClass="NewsTableViewController" customModule="VK_PlusHW2_4" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="Hzy-ZP-q6F">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

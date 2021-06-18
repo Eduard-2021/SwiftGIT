@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+class DataAboutSession {
+    static let data = DataAboutSession()
+    var token = String()
+    var userID:Int = 0
+    
+    private init(){}
+}

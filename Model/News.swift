@@ -8,6 +8,9 @@
 import UIKit
 
 struct News {
+    var avatarPhoto : UIImage
+    var avatarName : String
+    var date : String
     var photo : UIImage
     var Comment : String
     var numberOfLiles : Int

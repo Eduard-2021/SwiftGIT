@@ -5,4 +5,11 @@
 //  Created by Eduard on 08.04.2021.
 //
 
-import Foundation
+import UIKit
+
+//Задаем высоту ячейки
+enum HeightOfSell : CGFloat {
+case high = 130
+case middle = 90
+case low = 50
+    }
