@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0CFD4B95FE75E7BC02C376E9 /* Pods_VK_PlusHW2_4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71AC2705F12893D7B68FBF9E /* Pods_VK_PlusHW2_4.framework */; };
 		2305EC18261A2C4B00FB2E2D /* FriendInfoCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2305EC17261A2C4B00FB2E2D /* FriendInfoCollectionController.swift */; };
+		230CF9FE267E40EF00427D61 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 230CF9FD267E40EF00427D61 /* GoogleService-Info.plist */; };
 		2364CFD22635CFFE00674049 /* FotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2364CFD02635CFFE00674049 /* FotoCollectionViewCell.swift */; };
 		2364CFD32635CFFE00674049 /* FotoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2364CFD12635CFFE00674049 /* FotoCollectionViewCell.xib */; };
 		236B026226236F760079A087 /* AvatarImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B026126236F760079A087 /* AvatarImage.swift */; };
@@ -66,6 +67,7 @@
 
 /* Begin PBXFileReference section */
 		2305EC17261A2C4B00FB2E2D /* FriendInfoCollectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendInfoCollectionController.swift; sourceTree = "<group>"; };
+		230CF9FD267E40EF00427D61 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2364CFD02635CFFE00674049 /* FotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		2364CFD12635CFFE00674049 /* FotoCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FotoCollectionViewCell.xib; sourceTree = "<group>"; };
 		236B026126236F760079A087 /* AvatarImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarImage.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				2376C4CD2617421400822D22 /* Assets.xcassets */,
 				2376C4CF2617421400822D22 /* LaunchScreen.storyboard */,
 				2376C4D22617421400822D22 /* Info.plist */,
+				230CF9FD267E40EF00427D61 /* GoogleService-Info.plist */,
 			);
 			path = VK_PlusHW2.4;
 			sourceTree = "<group>";
@@ -413,6 +416,7 @@
 				23838521262CC39100321095 /* NewsCommentCell.xib in Resources */,
 				23838502262C7FF600321095 /* FriendAndGroupCell.xib in Resources */,
 				2383851C262CB44400321095 /* NewsPhotoCell.xib in Resources */,
+				230CF9FE267E40EF00427D61 /* GoogleService-Info.plist in Resources */,
 				2364CFD32635CFFE00674049 /* FotoCollectionViewCell.xib in Resources */,
 				23838526262CC56200321095 /* NewsLikesCell.xib in Resources */,
 			);
