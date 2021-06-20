@@ -6,58 +6,114 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseAuth
 
 class ViewController: UIViewController {
     
     let cloud = CAShapeLayer()
     var buttonEnterEarlierPress = false
+    private var handle: AuthStateDidChangeListenerHandle!
+    var cloudActivity = false
     
     @IBOutlet weak var loginField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBAction func unwindSwgue(for unwindSegue: UIStoryboardSegue) {}
     
-    private func checkLoginPassword() -> Bool {
-        //Проверка логина и пароля (пока заданы дефолтные значения)
-        var login = loginField.text!
-        login = "a@a.com"
-        var password = passwordField.text!
-        password = "12345678"
-        if (login == "a@a.com") && (password == "12345678") {
-            return true
+    @IBAction func SingUp(_ sender: Any) {
+            let alert = UIAlertController(title: "Register",
+                                              message: "",
+                                              preferredStyle: .alert)
+            alert.addTextField { textEmail in
+                    textEmail.placeholder = "Enter your email"
+            }
+            alert.addTextField { textPassword in
+                    textPassword.isSecureTextEntry = true
+                    textPassword.placeholder = "Enter your password"
+            }
+            let cancelAction = UIAlertAction(title: "Cancel",
+                                                 style: .cancel)
+
+            let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+                    guard let emailField = alert.textFields?[0],
+                        let passwordField = alert.textFields?[1],
+                        let password = passwordField.text,
+                        let email = emailField.text else { return }
+                Auth.auth().createUser(withEmail: email, password: password) { [weak self] user, error in
+                    if let error = error {
+                        self?.showAlert(title: "Error", message: error.localizedDescription)
+                    }
+//   Юрий, else и вызов singInVK не нужен, поскольку похоже при успешном создании пользователя происходит сразу его вход в базу
+//                    else {
+//                        self?.singInVK(email: email, password: password)
+//                    }
+                }
+                self.cloudActivity = true
+                self.cloudActivation()
+            }
+            alert.addAction(saveAction)
+            alert.addAction(cancelAction)
+            present(alert, animated: true, completion: nil)
         }
-        else {
-            //Если неправильно, то вызывается Alert
-            uncorrectPasswordOrLogin()
-            return false
-        }
+    
+    private func showAlert(title: String, message: String){
+        cloudActivity = false
+        let showAlertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Cancel",
+                                             style: .cancel)
+        showAlertController.addAction(cancelAction)
+        present(showAlertController, animated: true)
     }
+    
+    private func singInVK(email:String, password: String){
+        Auth.auth().signIn(withEmail: email, password: password) {[weak self] user, error in
+            if let error = error {
+                self?.showAlert(title: "Error", message: error.localizedDescription)
+                self?.loginField.text = nil
+                self?.passwordField.text = nil
+            }
+        }
+        cloudActivity = true
+        cloudActivation()
+    }
+    
     
     // Метод отрабатывает нажатие на кнопку "Войти"
     @IBAction func pressEnter(_ sender: Any) {
         if !buttonEnterEarlierPress { //проверка не нажимался ли повторно во время анимации ввод чтобы не множить движущиеся по контуру облака линии
-            
+            guard let email = loginField.text,
+                  let password = passwordField.text,
+                  !email.isEmpty,
+                  !password.isEmpty
+            else {
+                showAlert(title: "Error", message: "Не введены или не правильно введены данные!")
+                return
+            }
+            singInVK(email: email, password: password)
+        }
+    }
+    
+    private func cloudActivation() {
         buttonEnterEarlierPress = true
         cloud.isHidden = false // делаем облако загрузки видимым
         animateLoadingCloud() // вызываем метод создания бегущей полосы по облаку
         
         let cub = UIView(); view.addSubview(cub) // создание технической View, которой на экране не видно, но она в рамках следующей анамации будет обеспечивать 3 секундную задержку перед переходом в блок Complite, который, в свою очередь, производит переход по Segue на слудующий экран (анаимацию класса CAKeyframeAnimation и его Complete не удалось для этого использовать - сразу активируется Complete)
         
+        
         UIView.animate(withDuration: 3,
                        animations: {
                         cub.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
                        },
                        completion: { [self] _ in
-                        if checkLoginPassword() {
-                        self.performSegue(withIdentifier: "showSecondWindow", sender: nil)
-                        }
                         cub.removeFromSuperview() // удаление технической View
                         // удаление облака и всех связанных с ним слоев
                         self.cloud.isHidden = true
                         self.cloud.sublayers = nil
                         self.cloud.removeFromSuperlayer()
+                        if cloudActivity {cloudActivation()}//рекурсия пока не будет проведена аутефикация в Firebase
                        })
-        }
     }
     
     //Возврат кнопке "Войти" возможности вызывать облако и переходить на следующий экран
@@ -65,27 +121,14 @@ class ViewController: UIViewController {
         buttonEnterEarlierPress = false
     }
     
-    // Отработка неверного логина или пароля через Alert
-    private func uncorrectPasswordOrLogin(){
-        let alertController = UIAlertController(title: "Ошибка",
-                                                message: "Неверный логин или пароль",
-                                                preferredStyle: .alert)
-        let buttonOk = UIAlertAction(title: "Ok", style: .default, handler:
-                                        { _ in self.loginField.text = ""
-                                            self.passwordField.text = ""
-                                        })
-        alertController.addAction(buttonOk)
-        present(alertController, animated: true)
-    }
-    
-    
+  
     //метод задания параметров облаку, его размещение и анамирование по нему линии
     func animateLoadingCloud(){
         let factor : CGFloat = 5 //переменная, которая масштабирует (уменьшает) облако в указанное число раз
         
         //задание позиции облаку
         let pozzitionCloudX : CGFloat = self.view.bounds.width/2 - 28
-        let pozzitionCloudY = self.view.bounds.height/2 - 10
+        let pozzitionCloudY = self.view.bounds.height/2 + 20
         cloud.frame = CGRect(x: pozzitionCloudX, y: pozzitionCloudY, width: 0, height: 0)
         
         //Создание константы, в которой храниться начальная точка прорисовки облака и точек линии
@@ -118,7 +161,7 @@ class ViewController: UIViewController {
         moveAnimation.path = bezieCloud.cgPath
         moveAnimation.calculationMode = .paced
         moveAnimation.speed = 1
-        moveAnimation.repeatCount = 3
+        moveAnimation.repeatCount = 1
         moveAnimation.duration = 3
         moveAnimation.beginTime = CACurrentMediaTime() + duration
         
@@ -167,6 +210,17 @@ class ViewController: UIViewController {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self,
                                                           action: #selector(hideKeyboard))
         scrollView?.addGestureRecognizer(tapGestureRecognizer)
+        
+        try? Auth.auth().signOut()
+        
+        self.handle = Auth.auth().addStateDidChangeListener { auth, user in
+            if user != nil {
+                self.performSegue(withIdentifier: "ShowVKViewControllerSegue", sender: nil)
+                self.cloudActivity = false
+                self.loginField.text = nil
+                self.passwordField.text = nil
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

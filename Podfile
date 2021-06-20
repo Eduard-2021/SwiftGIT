@@ -11,5 +11,9 @@ target 'VK_PlusHW2.4' do
   pod 'KeychainSwift'
   pod 'RealmSwift'
   pod 'Kingfisher'
+  pod 'Firebase'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Database'
+  pod 'FirebaseCore'
 
 end

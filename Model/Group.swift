@@ -17,3 +17,5 @@ var activeGroups : [Group] = []
 var allGroups : [Group] = []
 var numberOfGroups = -1
 var numberOfFoundGroups = -1
+var searchFraze = "Musiс"
+var searchNumber = 1
