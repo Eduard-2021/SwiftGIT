@@ -22,6 +22,6 @@ extension RealmAllGroups {
         self.init()
         self.idGroup = groupsVK.idGroup
         self.nameGroup = groupsVK.nameGroup
-        self.imageGroupURL = groupsVK.imageGroup
+        self.imageGroupURL = groupsVK.imageGroupURL
     }
 }

@@ -7,6 +7,8 @@
 
 import UIKit
 
+var newsVK = [OneNews]()
+
 struct News {
     var avatarPhoto : UIImage
     var avatarName : String

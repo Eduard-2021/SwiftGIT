@@ -44,6 +44,6 @@ extension OnePhoto: Codable {
 extension VKLikes: Codable {
     enum CodingKeys: String, CodingKey {
         case userLikes = "user_likes"
-        case count = "count"
+        case count
     }
 }

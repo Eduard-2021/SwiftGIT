@@ -8,11 +8,13 @@
 import UIKit
 import RealmSwift
 
-class AllGroupsTableController: UITableViewController {
+class AllGroupsTableController: UITableViewController, UISearchBarDelegate {
 
     private let networkService = MainNetworkService()
     var allGroupsInRealm = try? RealmService.load(typeOf: RealmAllGroups.self, sortedKey: "idGroup")
     var token: NotificationToken?
+    
+    @IBOutlet weak var searchTextForAllGroups: UISearchBar!
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return allGroupsInRealm?.count ?? 0
@@ -32,7 +34,10 @@ class AllGroupsTableController: UITableViewController {
         super.viewDidLoad()
         let nib = UINib(nibName: "FriendAndGroupCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "FriendAndGroupCell")
-        loadAndSaveAllGroupsInRealm()
+        loadAndSaveAllGroupsInRealm(textForSearchInAllGroups: textForSearch)
+        updateTableViewFromRealm()
+        searchTextForAllGroups.delegate = self
+        searchTextForAllGroups.text = textForSearch
 
     }
     
@@ -53,15 +58,25 @@ class AllGroupsTableController: UITableViewController {
 
     }
     
-    private func loadAndSaveAllGroupsInRealm(){
-        networkService.groupsSearch(textForSearch: "Music", numberGroups: 10, completion: { allSearchedGroups in
+    private func loadAndSaveAllGroupsInRealm(textForSearchInAllGroups : String){
+        networkService.groupsSearch(textForSearch: textForSearchInAllGroups, numberGroups: 10, completion: { allSearchedGroups in
             guard
                 let allSearchGroupsVK = allSearchedGroups
             else {return}
+            guard let groupsForDelete = self.allGroupsInRealm else {return}
+            try? RealmService.delete(object: groupsForDelete)
             try? RealmService.save(items: allSearchGroupsVK)
-            self.tableView.reloadData()
-            self.updateTableViewFromRealm()
         })
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText != "" {
+        textForSearch = searchText
+            loadAndSaveAllGroupsInRealm(textForSearchInAllGroups: textForSearch)}
+        else {
+            guard let groupsForDelete = self.allGroupsInRealm else {return}
+            try? RealmService.delete(object: groupsForDelete)
+        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

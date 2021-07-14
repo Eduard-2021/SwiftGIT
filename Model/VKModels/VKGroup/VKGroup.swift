@@ -8,13 +8,13 @@
 struct VKGroup {
     let idGroup : Int
     let nameGroup: String
-    let imageGroup : String
+    let imageGroupURL : String
 }
 
 extension VKGroup: Codable {
     enum CodingKeys: String, CodingKey {
         case idGroup = "id"
         case nameGroup = "name"
-        case imageGroup = "photo_200"
+        case imageGroupURL = "photo_200"
     }
 }

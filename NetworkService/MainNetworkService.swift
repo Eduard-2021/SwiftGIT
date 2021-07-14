@@ -127,6 +127,68 @@ final class MainNetworkService {
         }
         .resume()
     }
+    
+    func getNews(completion: @escaping (VKResponseDecodable<VKNews>?) -> Void) {
+        let session = URLSession.shared
+        var urlComponents = makeComponents(for: .getNews)
+        urlComponents.queryItems?.append(contentsOf: [
+            URLQueryItem(name: "filters", value: "post"),
+            URLQueryItem(name: "count", value: "4")
+        ])
+        
+        guard let url = urlComponents.url else {return}
+        session.dataTask(with: url) { (data, response, error) in
+            if let data = data {
+                let vkResponse = try? JSONDecoder().decode(VKResponseDecodable<VKNews>.self, from: data)
+                DispatchQueue.main.async {
+                     completion(vkResponse)
+                }
+            }
+        }
+        .resume()
+    }
+    
+    func getGroupsOfNews(groupsIDs: String, completion: @escaping (VKResponseArray<VKGroup>?) -> Void) {
+        let session = URLSession.shared
+        var urlComponents = makeComponents(for: .getGroupsOfNews)
+        urlComponents.queryItems?.append(contentsOf: [
+            URLQueryItem(name: "group_ids", value: groupsIDs),
+            URLQueryItem(name: "fields", value: "description"),
+        ])
+        
+        guard let url = urlComponents.url else {return}
+        session.dataTask(with: url) { (data, response, error) in
+            if let data = data {
+                let vkResponse = try? JSONDecoder().decode(VKResponseArray<VKGroup>.self, from: data)
+                DispatchQueue.main.async {
+                     completion(vkResponse)
+                }
+            }
+        }
+        .resume()
+    }
+    
+    func getUsersOfNews(usersIDs: String, completion: @escaping (VKResponseArray<VKUser>?) -> Void) {
+        let session = URLSession.shared
+        var urlComponents = makeComponents(for: .getUserOfNews)
+        urlComponents.queryItems?.append(contentsOf: [
+            URLQueryItem(name: "user_ids", value: usersIDs),
+            URLQueryItem(name: "fields", value: "photo_200"),
+        ])
+        
+        guard let url = urlComponents.url else {return}
+        session.dataTask(with: url) { (data, response, error) in
+            if let data = data {
+                let vkResponse = try? JSONDecoder().decode(VKResponseArray<VKUser>.self, from: data)
+                DispatchQueue.main.async {
+                     completion(vkResponse)
+                }
+            }
+        }
+        .resume()
+    }
 }
+
+
 
 

@@ -38,6 +38,10 @@ class AllPhotoOfFriendViewController: UIViewController {
         rightPhoto.frame = CGRect(x: self.view.bounds.width, y: pozitionY, width: self.view.bounds.width, height: self.view.bounds.width)
         centerPhoto.frame = CGRect(x: 0, y: pozitionY, width: self.view.bounds.width, height: self.view.bounds.width)
         
+        leftPhoto.contentMode = .scaleAspectFit
+        rightPhoto.contentMode = .scaleAspectFit
+        centerPhoto.contentMode = .scaleAspectFit
+        
         guard let realmCurrentUserPhotos = realmUserPhotos?.filter("idUser == %@", selectedUser as Any) else {return}
         numberPhoto = FriendInfoCollectionController.numberOfPhoto
         centerPhoto.kf.setImage(with: URL(string: realmCurrentUserPhotos[numberPhoto].URLimage))

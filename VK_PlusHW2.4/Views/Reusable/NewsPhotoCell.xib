@@ -4,36 +4,51 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewsPhotoCell" rowHeight="315" id="KGk-i7-Jjw" customClass="NewsPhotoCell" customModule="VK_PlusHW5" customModuleProvider="target">
+        <tableViewCell contentMode="scaleAspectFit" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewsPhotoCell" id="KGk-i7-Jjw" customClass="NewsPhotoCell" customModule="VK_PlusHW2_4" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="421" height="315"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="421" height="315"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fZH-IU-JE4">
+                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="1Ch-4h-oaF">
                         <rect key="frame" x="0.0" y="0.0" width="421" height="315"/>
-                    </imageView>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="315" id="EJN-6y-Eeo"/>
+                        </constraints>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="sk1-Xk-afY">
+                            <size key="itemSize" width="200" height="200"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                    </collectionView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="fZH-IU-JE4" secondAttribute="bottom" id="D88-cb-ndV"/>
-                    <constraint firstItem="fZH-IU-JE4" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="height" multiplier="421:315" id="Jv5-6i-jw2"/>
-                    <constraint firstItem="fZH-IU-JE4" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" id="PiJ-CD-PhM"/>
-                    <constraint firstItem="fZH-IU-JE4" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="XXp-ka-P4y"/>
-                    <constraint firstAttribute="trailing" secondItem="fZH-IU-JE4" secondAttribute="trailing" id="kgO-98-e2u"/>
-                    <constraint firstItem="fZH-IU-JE4" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="uNM-Rc-fcO"/>
+                    <constraint firstItem="1Ch-4h-oaF" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="CL6-L6-dtV"/>
+                    <constraint firstAttribute="trailing" secondItem="1Ch-4h-oaF" secondAttribute="trailing" id="VIm-6M-VLY"/>
+                    <constraint firstAttribute="bottom" secondItem="1Ch-4h-oaF" secondAttribute="bottom" id="bSs-IZ-4M7"/>
+                    <constraint firstItem="1Ch-4h-oaF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="fYB-hd-DRa"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="newsPhoto" destination="fZH-IU-JE4" id="yhA-kY-7Nk"/>
+                <outlet property="conststrainForCollection" destination="EJN-6y-Eeo" id="bh3-qE-PgP"/>
+                <outlet property="newsCollectionView" destination="1Ch-4h-oaF" id="tvJ-fO-xOt"/>
             </connections>
             <point key="canvasLocation" x="16.666666666666668" y="149.66517857142856"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

@@ -34,6 +34,7 @@ import UIKit
             
         bigPhotoViewController.centerPhoto.isHidden = true
         let photoForAnimation = UIImageView(image: bigPhotoViewController.centerPhoto.image)
+            photoForAnimation.contentMode = .scaleAspectFit
 
         let oldPozitionPhoto = FriendInfoCollectionController.pozitionCellForAnimation
 
@@ -44,7 +45,8 @@ import UIKit
             height: 180)
 
         transitionContext.containerView.addSubview(photoForAnimation)
-
+//        source.view.alpha = 0
+            
         UIView.animate(withDuration: 1,
                        delay: 0,
                        options: [],
