@@ -12,22 +12,12 @@ class NewsTableViewController: UITableViewController {
     
     private let networkService = MainNetworkService()
     
-
-//    static var news : [News] =
-//        [News(avatarPhoto : UIImage(named: "1")!, avatarName: "1", date: "12.04.2021", photo: UIImage(named: "1")!, Comment: "Первый информационный пост", numberOfLiles: 5, iLike: true, numberOfViews: 30),
-//         News(avatarPhoto : UIImage(named: "1")!, avatarName: "1", date: "14.04.2021", photo: UIImage(named: "1")!, Comment: "Второй информационный пост", numberOfLiles: 12, iLike: false, numberOfViews: 43),
-//         News(avatarPhoto : UIImage(named: "1")!, avatarName: "1", date: "17.04.2021", photo: UIImage(named: "1")!, Comment: "Третий информационный пост", numberOfLiles: 6, iLike: true, numberOfViews: 20),
-//         News(avatarPhoto : UIImage(named: "1")!, avatarName: "1", date: "18.04.2021", photo: UIImage(named: "1")!, Comment: "Четверный информационный пост", numberOfLiles: 10, iLike: false, numberOfViews: 15),]
-    
-//    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//       500.0
-//    }
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        networkService.getNews { [weak self] vkResponse in
-            guard let newsVKUnwrapped = vkResponse?.response.items else {return}
+        networkService.getNews { [weak self] (vkResponseItems,
+                                             vkResponsePRofiles,
+                                             vkResponseGroups) in
+            guard let newsVKUnwrapped = vkResponseItems?.response.items else {return}
             newsVK = newsVKUnwrapped
             var groupsIDs = ""
             var usersIDs = ""
@@ -104,8 +94,6 @@ class NewsTableViewController: UITableViewController {
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: "NewsPhotoCell", for: indexPath) as! NewsPhotoCell
             cell.config(currentNews: currentNews)
-//            cell.newsPhoto.image =  NewsTableViewController.news[indexPath.section].photo
-//            cell.newsPhoto.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height)
             cellNews = cell
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCommentCell", for: indexPath) as! NewsCommentCell
@@ -123,52 +111,3 @@ class NewsTableViewController: UITableViewController {
 
 }
     
-    
-    
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-//}

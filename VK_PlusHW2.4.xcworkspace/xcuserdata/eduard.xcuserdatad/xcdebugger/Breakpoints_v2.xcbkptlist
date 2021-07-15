@@ -119,54 +119,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "69160B3B-02EE-4021-AC65-FC2A1D189045"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NetworkService/MainNetworkService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
-            landmarkName = "getNews(completion:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "69160B3B-02EE-4021-AC65-FC2A1D189045 - 9ce3cbaf5ec664c5"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "VK_PlusHW2_4.MainNetworkService.getNews(completion: (Swift.Optional&lt;VK_PlusHW2_4.VKResponseDecodable&lt;VK_PlusHW2_4.VKNews&gt;&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "VK_PlusHW2.4"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/eduard/Documents/Xcode/SwiftGIT/VK_PlusHW2.4/NetworkService/MainNetworkService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "140"
-                  endingLineNumber = "140"
-                  offsetFromSymbolStart = "1392">
-               </Location>
-               <Location
-                  uuid = "69160B3B-02EE-4021-AC65-FC2A1D189045 - f72f4c1a091eeaba"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in VK_PlusHW2_4.MainNetworkService.getNews(completion: (Swift.Optional&lt;VK_PlusHW2_4.VKResponseDecodable&lt;VK_PlusHW2_4.VKNews&gt;&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "VK_PlusHW2.4"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/eduard/Documents/Xcode/SwiftGIT/VK_PlusHW2.4/NetworkService/MainNetworkService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "141"
-                  endingLineNumber = "141"
-                  offsetFromSymbolStart = "296">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "9632E66F-63B4-42A0-ACC8-5DA7C63C732A"
             shouldBeEnabled = "No"
             ignoreCount = "0"
