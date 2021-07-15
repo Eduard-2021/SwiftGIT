@@ -135,7 +135,6 @@ class FotoCollectionViewCell: UICollectionViewCell {
             }
        serNumberUser.text = String(id)
        serNumberPhoto.text = String(serialNumberPhoto)
-        
     }
 }
 

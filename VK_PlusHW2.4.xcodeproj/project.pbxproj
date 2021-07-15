@@ -287,6 +287,7 @@
 				2376C4C62617421300822D22 /* SceneDelegate.swift */,
 				2376C4CD2617421400822D22 /* Assets.xcassets */,
 				2376C4CF2617421400822D22 /* LaunchScreen.storyboard */,
+				2364CFD12635CFFE00674049 /* FotoCollectionViewCell.xib */,
 				2376C4D22617421400822D22 /* Info.plist */,
 			);
 			path = VK_PlusHW2.4;
@@ -345,7 +346,6 @@
 				23838524262CC56200321095 /* NewsLikesCell.xib */,
 				239F1893262F5DF4009D0929 /* FriendAndGroupsHeader.swift */,
 				2364CFD02635CFFE00674049 /* FotoCollectionViewCell.swift */,
-				2364CFD12635CFFE00674049 /* FotoCollectionViewCell.xib */,
 				23229C3A268C809E00A47FD2 /* NewsCollectionViewCell.swift */,
 				23229C3B268C809E00A47FD2 /* NewsCollectionViewCell.xib */,
 			);

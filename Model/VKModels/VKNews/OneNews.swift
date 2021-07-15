@@ -18,6 +18,18 @@ struct OneNews: Decodable {
     var newsGroupVK = VKGroup(idGroup: 0, nameGroup: "", imageGroupURL: "")
     var newsUserVK = VKUser(idUser: 0, firstName: "", lastName: "", userAvatarURL: "")
 
+    
+    /*
+     source_id": -161486117,
+                     "date": 1626276759,
+                     "can_doubt_category": false,
+                     "can_set_category": false,
+                     "post_type": "post",
+                     "text": "Трейлер второго сезона сериала «Внешние отмели».\n\nПремьера: 30 июля",
+                     "marked_as_ads": 0,
+                     "attachments": [
+     */
+    
 
 struct VKAttachmentCommon {
     var type : String = ""
@@ -50,11 +62,13 @@ struct VKAttachmentCommon {
     enum PhotoKeys: String, CodingKey {
         case id
         case ownerID = "owner_id"
-        case userID = "user_id"
+//        case userID = "user_id"
         case text
         case date
         case sizes
     }
+    
+  
     
     enum SizesKeys: String, CodingKey {
         case height
@@ -75,6 +89,31 @@ struct VKAttachmentCommon {
         case width
         case url
     }
+    
+    /*
+     "access_key": "de1b5f8c5e44b15053",
+                                 "can_comment": 1,
+                                 "can_like": 1,
+                                 "can_repost": 1,
+                                 "can_subscribe": 1,
+                                 "can_add_to_faves": 1,
+                                 "can_add": 1,
+                                 "comments": 0,
+                                 "date": 1626276665,
+                                 "description": "",
+                                 "duration": 124,
+                                 "image": [
+     
+     "width": 1920,
+                                 "height": 1080,
+                                 "id": 456242936,
+                                 "owner_id": -161486117,
+                                 "title": "Внешние отмели 2   Официальный трейлер   Netflix",
+                                 "is_favorite": false,
+                                 "track_code": "video_65505c08leK4F0cT8Fcjw-jDWOxQTPGXmmFm569G1KQ-jyAEpiCmwq0QQBPzMCTF68Q_7FfQJzsvWlXRqyCxwVqPMimXFg",
+                                 "type": "video",
+                                 "views": 22382
+     */
     
     enum AudioKeys: String, CodingKey {
         case artist
@@ -127,7 +166,7 @@ struct VKAttachmentCommon {
                         let photoValues = try valuesAttachment.nestedContainer(keyedBy: PhotoKeys.self, forKey: .photo)
                         oneAttachment.attachmentVKPhoto.photo.id = try photoValues.decode(Int.self, forKey: .id)
                         oneAttachment.attachmentVKPhoto.photo.ownerID = try photoValues.decode(Int.self, forKey: .ownerID)
-                        oneAttachment.attachmentVKPhoto.photo.userID = try photoValues.decode(Int.self, forKey: .userID)
+//                        oneAttachment.attachmentVKPhoto.photo.userID = try photoValues.decode(Int.self, forKey: .userID)
                         oneAttachment.attachmentVKPhoto.photo.text = try photoValues.decode(String.self, forKey: .text)
                         oneAttachment.attachmentVKPhoto.photo.date = try photoValues.decode(Double.self, forKey: .date)
 
@@ -152,10 +191,13 @@ struct VKAttachmentCommon {
                         oneAttachment.attachmentVKVideo.video.id = try videoValues.decode(Int.self, forKey: .id)
                         oneAttachment.attachmentVKVideo.video.ownerID = try videoValues.decode(Int.self, forKey: .ownerId)
                         oneAttachment.attachmentVKVideo.video.title = try videoValues.decode(String.self, forKey: .title)
-                        let coverPhotoValues = try videoValues.nestedContainer(keyedBy: CoverPhotoKeys.self, forKey: .image)
-                        oneAttachment.attachmentVKVideo.video.image.height = try coverPhotoValues.decode(Int.self, forKey: .height)
-                        oneAttachment.attachmentVKVideo.video.image.url = try coverPhotoValues.decode(String.self, forKey: .url)
-                        oneAttachment.attachmentVKVideo.video.image.width = try coverPhotoValues.decode(Int.self, forKey: .width)
+                        var coverPhotoValuesUnkeyed = try videoValues.nestedUnkeyedContainer(forKey: .image)
+                        while !coverPhotoValuesUnkeyed.isAtEnd {
+                            let coverPhotoValues = try coverPhotoValuesUnkeyed.nestedContainer(keyedBy: CoverPhotoKeys.self)
+                            oneAttachment.attachmentVKVideo.video.image.height = try coverPhotoValues.decode(Int.self, forKey: .height)
+                            oneAttachment.attachmentVKVideo.video.image.url = try coverPhotoValues.decode(String.self, forKey: .url)
+                            oneAttachment.attachmentVKVideo.video.image.width = try coverPhotoValues.decode(Int.self, forKey: .width)
+                        }
                     case "link":
                         let linkValues = try valuesAttachment.nestedContainer(keyedBy: LinkKeys.self, forKey: .link)
                         oneAttachment.attachmentVKLink.link.title = try linkValues.decode(String.self, forKey: .title)

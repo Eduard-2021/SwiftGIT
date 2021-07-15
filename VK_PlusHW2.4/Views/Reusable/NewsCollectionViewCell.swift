@@ -13,10 +13,11 @@ class NewsCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        
-        
-        // Initialization code
-    }
 
+    }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        newsImages.image = nil
+    }
+    
 }

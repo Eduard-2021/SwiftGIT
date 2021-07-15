@@ -133,7 +133,7 @@ final class MainNetworkService {
         var urlComponents = makeComponents(for: .getNews)
         urlComponents.queryItems?.append(contentsOf: [
             URLQueryItem(name: "filters", value: "post"),
-            URLQueryItem(name: "count", value: "4")
+            URLQueryItem(name: "count", value: "20")
         ])
         
         guard let url = urlComponents.url else {return}
