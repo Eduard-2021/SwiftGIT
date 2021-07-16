@@ -8,6 +8,8 @@
 import UIKit
 
 class NewsLikesCell: UITableViewCell {
+    
+    private var indexNews = 0
 
     @IBOutlet weak var newsNumberOfLikes: UILabel!
     @IBOutlet weak var section: UILabel!
@@ -15,10 +17,7 @@ class NewsLikesCell: UITableViewCell {
     @IBOutlet weak var newsNumberOfViews: UILabel!
     @IBAction func newsButtonLikesAction(_ sender: Any) {
         
-        guard let section = Int(section.text!) else {return}
 
-        
-        
         if newsButtonLikesImage.currentImage == UIImage(named: "NoLike") {
             UIView.transition(with: newsButtonLikesImage,
                               duration: 1,
@@ -31,9 +30,9 @@ class NewsLikesCell: UITableViewCell {
             
             
             
-            NewsTableViewController.news[section].numberOfLiles += 1
-            NewsTableViewController.news[section].iLike = true
-            newsNumberOfLikes.text = String(NewsTableViewController.news[section].numberOfLiles)
+            newsVK[indexNews].likes.count += 1
+            newsVK[indexNews].likes.userLikes = 1
+            newsNumberOfLikes.text = String(newsVK[indexNews].likes.count)
         }
         else {
             UIView.transition(with: newsButtonLikesImage,
@@ -45,9 +44,9 @@ class NewsLikesCell: UITableViewCell {
                               completion: nil)
             
             
-            NewsTableViewController.news[section].numberOfLiles -= 1
-            NewsTableViewController.news[section].iLike = false
-            newsNumberOfLikes.text = String(NewsTableViewController.news[section].numberOfLiles)
+            newsVK[indexNews].likes.count -= 1
+            newsVK[indexNews].likes.userLikes = 0
+            newsNumberOfLikes.text = String(newsVK[indexNews].likes.count)
         }
     }
         
@@ -59,4 +58,16 @@ class NewsLikesCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
+    func config(currentNews: OneNews, index: Int) {
+        indexNews = index
+        newsNumberOfLikes.text = String(currentNews.likes.count)
+        newsNumberOfViews.text = String(currentNews.views.count)
+        section.text = String(index)
+        if currentNews.likes.userLikes == 1 {
+            newsButtonLikesImage.setImage(UIImage(named: "Like")!, for: .normal)
+        }
+        else {
+            newsButtonLikesImage.setImage(UIImage(named: "NoLike")!, for: .normal)
+        }
+    }
 }

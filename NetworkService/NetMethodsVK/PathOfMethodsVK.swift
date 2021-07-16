@@ -10,6 +10,9 @@ enum PathOfMethodsVK: String {
     case getAllPhotos = "photos.getAll"
     case getGroupsUser = "groups.get"
     case groupsSearch = "groups.search"
+    case getNews = "newsfeed.get"
+    case getGroupsOfNews = "groups.getById"
+    case getUserOfNews = "users.get"
     
 }
 

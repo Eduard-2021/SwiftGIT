@@ -6,6 +6,7 @@ import Kingfisher
 
 class FriendInfoCollectionController: UICollectionViewController {
     
+    
     static var numberOfPhoto = 0
     static var pozitionCellForAnimation: CGPoint!
     static var photoCellForAnimation : UIImage!
@@ -22,9 +23,9 @@ class FriendInfoCollectionController: UICollectionViewController {
     
 
     private func updateCollectioViewFromRealm() {
-        guard let users = self.users else {return}
+        guard let realmUserPhotos = self.realmUserPhotos else {return}
         
-        self.token = users.observe { [self]  (changes: RealmCollectionChange) in
+        self.token = realmUserPhotos.observe { [self]  (changes: RealmCollectionChange) in
                     switch changes {
                     case .initial:
                                     self.collectionView.reloadData()
@@ -35,23 +36,21 @@ class FriendInfoCollectionController: UICollectionViewController {
                         print(error)
                     }
                 }
-
     }
-    
-    
-    
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let window = UIApplication.shared.keyWindow,
               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FotoCollectionViewCell", for: indexPath) as? FotoCollectionViewCell
         else {return}
-      
+        
+        cell.FotoOfFriend.isHidden = true
+        collectionView.reloadData()
+        
         FriendInfoCollectionController.pozitionCellForAnimation = collectionView.convert(cell.frame.origin, to: window)
         FriendInfoCollectionController.numberOfPhoto = indexPath.row
         
         performSegue(withIdentifier: "ShowBigPhoto", sender: indexPath)
        
-
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -85,8 +84,7 @@ class FriendInfoCollectionController: UICollectionViewController {
         let cellName = UINib(nibName: "FotoCollectionViewCell", bundle: nil)
         collectionView.register(cellName, forCellWithReuseIdentifier: "FotoCollectionViewCell")
         loadPhotoFromRealm()
-//        MainNetworkService().getAllPhotos(ownerId:"\(DataAboutSession.data.userID)")
-//        MainNetworkService().getAllPhotos(userId:"604130258")
+        updateCollectioViewFromRealm()
         
     }
     
@@ -94,7 +92,6 @@ class FriendInfoCollectionController: UICollectionViewController {
         for value in users! {
             networkService.getAllPhotos(userId: String(value.id)) {[weak self] vkFriendsPhoto in
                 guard
-                    let self = self,
                     let vkPhotos = vkFriendsPhoto
                 else { return }
                 var vkPhotosWithNumber = [RealmUserPhoto]()
@@ -103,8 +100,6 @@ class FriendInfoCollectionController: UICollectionViewController {
                     vkPhotosWithNumber[index].serialNumberPhoto = index
                 }
                 try? RealmService.save(items: vkPhotosWithNumber)
-                self.collectionView.reloadData()
-                self.updateCollectioViewFromRealm()
             }
         }
     }

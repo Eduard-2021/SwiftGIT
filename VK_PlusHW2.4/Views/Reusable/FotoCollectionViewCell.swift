@@ -26,20 +26,8 @@ class FotoCollectionViewCell: UICollectionViewCell {
         
         guard let indexUser = Int(serNumberUser.text!),  let indexPhoto = Int(serNumberPhoto.text!) else {return}
         
-        var section = 0
-        var row = 0
-        
         var likedPhotoOfUser = realmUserPhotos!.filter("idUser == %@", indexUser, "serialNumberPhoto == %@", indexPhoto)
         likedPhotoOfUser = likedPhotoOfUser.filter("serialNumberPhoto == %@", indexPhoto)
-        
-//        for (indexSection,friendsInSection) in FriendsViewTableController.friendsSorted.enumerated() {
-//            for (indexRow,friend) in friendsInSection.enumerated() {
-//                if friend.id == indexUser {
-//                    section = indexSection
-//                    row = indexRow
-//                }
-//            }
-//        }
        
         if buttonLikeColor.currentImage == UIImage(named: "NoLike") {
 
@@ -62,8 +50,7 @@ class FotoCollectionViewCell: UICollectionViewCell {
                 }
             }
             
-            //FriendsViewTableController.friendsSorted[section][row].images[indexPhoto-1].numLikes += 1
-            
+    
             UIView.transition(with: numberLikes,
                               duration: 0.5,
                               options: .transitionCurlDown,
@@ -73,7 +60,6 @@ class FotoCollectionViewCell: UICollectionViewCell {
                               },
                               completion: nil)
             
-//            FriendsViewTableController.friendsSorted[section][row].images[indexPhoto-1].i_like = true
             if let likedPhotoOfUser = likedPhotoOfUser.first {
                 do {
                     let realm = try Realm()
@@ -97,7 +83,7 @@ class FotoCollectionViewCell: UICollectionViewCell {
                               },
                               completion: nil)
             
-//            FriendsViewTableController.friendsSorted[section][row].images[indexPhoto-1].numLikes -= 1
+
             if let likedPhotoOfUser = likedPhotoOfUser.first {
                 do {
                     let realm = try Realm()
@@ -119,7 +105,7 @@ class FotoCollectionViewCell: UICollectionViewCell {
                               },
                               completion: nil)
             
-//            FriendsViewTableController.friendsSorted[section][row].images[indexPhoto-1].i_like = false
+
             if let likedPhotoOfUser = likedPhotoOfUser.first {
                 do {
                     let realm = try Realm()
@@ -149,7 +135,6 @@ class FotoCollectionViewCell: UICollectionViewCell {
             }
        serNumberUser.text = String(id)
        serNumberPhoto.text = String(serialNumberPhoto)
-        
     }
 }
 

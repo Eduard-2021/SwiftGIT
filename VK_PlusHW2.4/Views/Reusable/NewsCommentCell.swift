@@ -21,4 +21,8 @@ class NewsCommentCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    func config(currentNews: OneNews){
+        newsComment.text =  currentNews.text
+    }
+    
 }
