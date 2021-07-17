@@ -32,6 +32,11 @@
 		236B2661261E417500610508 /* ActiveGroupsTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B2660261E417500610508 /* ActiveGroupsTableController.swift */; };
 		236B2664261E418A00610508 /* AllGroupsTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B2663261E418A00610508 /* AllGroupsTableController.swift */; };
 		236B9E0D264C2980006665D4 /* FriendsViewTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236B9E0C264C2980006665D4 /* FriendsViewTableController.swift */; };
+		236CE25E26A204330036747F /* GetPhotosOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236CE25D26A204330036747F /* GetPhotosOperation.swift */; };
+		236CE26226A206140036747F /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236CE26126A206140036747F /* AsyncOperation.swift */; };
+		236CE26726A20A860036747F /* ParsingPhotosOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236CE26626A20A860036747F /* ParsingPhotosOperation.swift */; };
+		236CE26B26A20BFF0036747F /* SavePhotoToRealmOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236CE26A26A20BFF0036747F /* SavePhotoToRealmOperation.swift */; };
+		236CE26E26A20F120036747F /* ConvertInRealmTypeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236CE26D26A20F120036747F /* ConvertInRealmTypeOperation.swift */; };
 		236CF9DF2653BD5B00C9DE63 /* DataAboutSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236CF9DE2653BD5B00C9DE63 /* DataAboutSession.swift */; };
 		236D04A8261EC296005A62BC /* heightOfSell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236D04A7261EC296005A62BC /* heightOfSell.swift */; };
 		236DC2D526332C420050DC65 /* AllPhotoOfFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236DC2D426332C420050DC65 /* AllPhotoOfFriendViewController.swift */; };
@@ -114,6 +119,11 @@
 		236B2660261E417500610508 /* ActiveGroupsTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveGroupsTableController.swift; sourceTree = "<group>"; };
 		236B2663261E418A00610508 /* AllGroupsTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllGroupsTableController.swift; sourceTree = "<group>"; };
 		236B9E0C264C2980006665D4 /* FriendsViewTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewTableController.swift; sourceTree = "<group>"; };
+		236CE25D26A204330036747F /* GetPhotosOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPhotosOperation.swift; sourceTree = "<group>"; };
+		236CE26126A206140036747F /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		236CE26626A20A860036747F /* ParsingPhotosOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsingPhotosOperation.swift; sourceTree = "<group>"; };
+		236CE26A26A20BFF0036747F /* SavePhotoToRealmOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavePhotoToRealmOperation.swift; sourceTree = "<group>"; };
+		236CE26D26A20F120036747F /* ConvertInRealmTypeOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConvertInRealmTypeOperation.swift; sourceTree = "<group>"; };
 		236CF9DE2653BD5B00C9DE63 /* DataAboutSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataAboutSession.swift; sourceTree = "<group>"; };
 		236D04A7261EC296005A62BC /* heightOfSell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = heightOfSell.swift; sourceTree = "<group>"; };
 		236DC2D426332C420050DC65 /* AllPhotoOfFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllPhotoOfFriendViewController.swift; sourceTree = "<group>"; };
@@ -240,6 +250,18 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		236CE25C26A204080036747F /* Operation */ = {
+			isa = PBXGroup;
+			children = (
+				236CE25D26A204330036747F /* GetPhotosOperation.swift */,
+				236CE26126A206140036747F /* AsyncOperation.swift */,
+				236CE26626A20A860036747F /* ParsingPhotosOperation.swift */,
+				236CE26A26A20BFF0036747F /* SavePhotoToRealmOperation.swift */,
+				236CE26D26A20F120036747F /* ConvertInRealmTypeOperation.swift */,
+			);
+			path = Operation;
+			sourceTree = "<group>";
+		};
 		237638F72664E5F900A4DD78 /* VKFriends */ = {
 			isa = PBXGroup;
 			children = (
@@ -261,6 +283,7 @@
 		2376C4B82617421300822D22 = {
 			isa = PBXGroup;
 			children = (
+				236CE25C26A204080036747F /* Operation */,
 				238053C3265CF84200893AC0 /* NetworkService */,
 				23BAB23426385ECE00DA4128 /* Animation */,
 				239F188F262F4C66009D0929 /* CommonMetods */,
@@ -606,6 +629,7 @@
 				2376C4C92617421300822D22 /* LoginPasswordController.swift in Sources */,
 				2383850D262C9B4D00321095 /* NewsAvatarCell.swift in Sources */,
 				23838501262C7FF600321095 /* FriendAndGroupCell.swift in Sources */,
+				236CE26226A206140036747F /* AsyncOperation.swift in Sources */,
 				2373046426788FEF00E85113 /* RealmActiveGroups.swift in Sources */,
 				2377A296265D5D1400BC4A38 /* PathOfMethodsVK.swift in Sources */,
 				23838525262CC56200321095 /* NewsLikesCell.swift in Sources */,
@@ -630,6 +654,7 @@
 				237DFA7E2667F9E7006B26D3 /* VKGroup.swift in Sources */,
 				2396CE7E269DBDE200AE1A00 /* VKGroupsOfNews.swift in Sources */,
 				2377784D2671374B006B5BAF /*  RealmService.swift in Sources */,
+				236CE25E26A204330036747F /* GetPhotosOperation.swift in Sources */,
 				2326BD9E26973FE9005A151A /* VKNewsVideo.swift in Sources */,
 				2377784926711BA8006B5BAF /* RealmUser.swift in Sources */,
 				2305EC18261A2C4B00FB2E2D /* FriendInfoCollectionController.swift in Sources */,
@@ -650,7 +675,10 @@
 				2396CE9726A0764800AE1A00 /* OneVKGroup.swift in Sources */,
 				23824AF8262DD74D00826E19 /* ViewController.swift in Sources */,
 				2326BDA726974228005A151A /* VKAttachmenkAudio.swift in Sources */,
+				236CE26726A20A860036747F /* ParsingPhotosOperation.swift in Sources */,
 				23777850267141C5006B5BAF /* RealmUserPhoto.swift in Sources */,
+				236CE26B26A20BFF0036747F /* SavePhotoToRealmOperation.swift in Sources */,
+				236CE26E26A20F120036747F /* ConvertInRealmTypeOperation.swift in Sources */,
 				23229C3C268C809E00A47FD2 /* NewsCollectionViewCell.swift in Sources */,
 				2396CE79269DA42700AE1A00 /* VKNewsViews.swift in Sources */,
 				236D04A8261EC296005A62BC /* heightOfSell.swift in Sources */,
