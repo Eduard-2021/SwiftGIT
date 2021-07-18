@@ -83,24 +83,40 @@ class FriendInfoCollectionController: UICollectionViewController {
     override func viewDidLoad() {
         let cellName = UINib(nibName: "FotoCollectionViewCell", bundle: nil)
         collectionView.register(cellName, forCellWithReuseIdentifier: "FotoCollectionViewCell")
-        loadPhotoFromRealm()
+        loadPhotoInRealm()
         updateCollectioViewFromRealm()
         
     }
     
-    private func loadPhotoFromRealm() {
+    private func loadPhotoInRealm() {
         for value in users! {
-            networkService.getAllPhotos(userId: String(value.id)) {[weak self] vkFriendsPhoto in
-                guard
-                    let vkPhotos = vkFriendsPhoto
-                else { return }
-                var vkPhotosWithNumber = [RealmUserPhoto]()
-                for (index,value) in vkPhotos.enumerated() {
-                    vkPhotosWithNumber.append(value)
-                    vkPhotosWithNumber[index].serialNumberPhoto = index
-                }
-                try? RealmService.save(items: vkPhotosWithNumber)
-            }
+            let mainOperation = OperationQueue()
+            let getPhotosOperation = GetPhotosOperation(userId: String(value.id))
+            mainOperation.addOperation(getPhotosOperation)
+            
+            let parsingPhotoOperation = ParsingPhotosOperation()
+            parsingPhotoOperation.addDependency(getPhotosOperation)
+            mainOperation.addOperation(parsingPhotoOperation)
+            
+            let convertInRealmTypeOperation = ConvertInRealmTypeOperation()
+            convertInRealmTypeOperation.addDependency(parsingPhotoOperation)
+            mainOperation.addOperation(convertInRealmTypeOperation)
+            
+            let savePhotoToRealmOperation = SavePhotoToRealmOperation()
+            savePhotoToRealmOperation.addDependency(convertInRealmTypeOperation)
+            OperationQueue.main.addOperation(savePhotoToRealmOperation)
+            
+//            networkService.getAllPhotos(userId: String(value.id)) {[weak self] vkFriendsPhoto in
+//                guard
+//                    let vkPhotos = vkFriendsPhoto
+//                else { return }
+//                var vkPhotosWithNumber = [RealmUserPhoto]()
+//                for (index,value) in vkPhotos.enumerated() {
+//                    vkPhotosWithNumber.append(value)
+//                    vkPhotosWithNumber[index].serialNumberPhoto = index
+//                }
+//                try? RealmService.save(items: vkPhotosWithNumber)
+//            }
         }
     }
     
