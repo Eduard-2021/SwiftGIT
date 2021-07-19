@@ -19,14 +19,15 @@ class SavePhotoToRealmOperation: AsyncOperation {
             vkPhotosWithNumber.append(value)
             vkPhotosWithNumber[index].serialNumberPhoto = index
         }
-          
-        do {
-            //сохранение данных в Realm
-            try RealmService.save(items: vkPhotosWithNumber)
-            state = .finished
-        }
-        catch {
-            print(error)
-        }
+//        DispatchQueue.main.async {
+            do {
+                //сохранение данных в Realm
+                try RealmService.save(items: vkPhotosWithNumber)
+                self.state = .finished
+            }
+            catch {
+                print(error)
+            }
+//        }
     }
 }
