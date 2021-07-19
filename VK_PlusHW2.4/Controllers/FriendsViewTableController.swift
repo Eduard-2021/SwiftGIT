@@ -7,6 +7,7 @@
 
 import UIKit
 import RealmSwift
+import PromiseKit
 
 
 
@@ -121,10 +122,6 @@ class FriendsViewTableController: UIViewController, UITableViewDelegate, UITable
                             if numberSection > usersUnwrap.numberOfSection {
                                 self.tableView.deleteSections(IndexSet(arrayLiteral: sectionDelete), with: .left)
                             }
-                        
-//                                    self.tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
-//                                                         with: .automatic)
-                                    
                         }
                             self.tableView.endUpdates()
                     quickTransitionControl.removeFromSuperview()
@@ -155,7 +152,7 @@ class FriendsViewTableController: UIViewController, UITableViewDelegate, UITable
         if action=="Удалить" {
             deleteActive = true
             guard let users = self.users else {return}
-            for (index,value) in users.enumerated() {
+            for (_,value) in users.enumerated() {
                 if value.fullName.lowercased().contains(friendName.lowercased()) {
                     let realm = try? Realm()
                     let userForDelete = realm!.objects(RealmUser.self).filter("id == %@", value.id)
@@ -178,20 +175,19 @@ class FriendsViewTableController: UIViewController, UITableViewDelegate, UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        networkService.getUserFriends { [weak self] vkFriends, vkFriendsUnsorted in
-            guard
-                let self = self,
-                var friends = vkFriends,
-                var friendsOrigin = vkFriendsUnsorted
-            else
-            { return }
-            friends = self.sortedFriendsFunction(friends: friends)
-            try? RealmService.save(items: friends)
-            friendsOrigin = self.saveOriginFriends(friends, friendsOrigin)
-            try? RealmService.save(items: friendsOrigin)
+        
+        firstly {
+            getUserFromNetWithPromise()}
+        .then { data in
+            getDataInTypeVKFriendsWithPromise(data: data)
+        }.then { vkResponses in
+            convertAndSaveInRealmWithPromise(vkResponses: vkResponses)
+        }.done{_ in
             self.tableView.reloadData()
             self.updateTableViewFromRealm()
             self.quickTransitionSection()
+        } .catch {error in
+            print(error)
         }
 
         searchBarForFriends.delegate = self
@@ -249,7 +245,7 @@ class FriendsViewTableController: UIViewController, UITableViewDelegate, UITable
     }
     
     
-    private func saveOriginFriends(_ friends: [RealmUser], _ friendsOrigin: [RealmUserOrigin]) -> [RealmUserOrigin] {
+     func saveOriginFriends(_ friends: [RealmUser], _ friendsOrigin: [RealmUserOrigin]) -> [RealmUserOrigin] {
         for (index,value) in friends.enumerated() {
             friendsOrigin[index].firstName = value.firstName
             friendsOrigin[index].fullName = value.fullName
@@ -283,7 +279,7 @@ class FriendsViewTableController: UIViewController, UITableViewDelegate, UITable
     
     
     
-    private func sortedFriendsFunction(friends:[RealmUser]) -> [RealmUser] {
+    func sortedFriendsFunction(friends:[RealmUser]) -> [RealmUser] {
         let friendsSorted = friends.sorted(by: { (i1, i2) -> Bool in i1.fullName<i2.fullName})
         var numberOfSections = 0
         for (index,value) in friendsSorted.enumerated() {

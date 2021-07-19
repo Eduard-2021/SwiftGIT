@@ -11,5 +11,6 @@ target 'VK_PlusHW2.4' do
   pod 'KeychainSwift'
   pod 'RealmSwift'
   pod 'Kingfisher'
+  pod 'PromiseKit'
 
 end

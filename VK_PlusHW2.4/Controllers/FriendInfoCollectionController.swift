@@ -43,7 +43,7 @@ class FriendInfoCollectionController: UICollectionViewController {
               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FotoCollectionViewCell", for: indexPath) as? FotoCollectionViewCell
         else {return}
         
-        cell.FotoOfFriend.isHidden = true
+        cell.photoOfFriend.isHidden = true
         collectionView.reloadData()
         
         FriendInfoCollectionController.pozitionCellForAnimation = collectionView.convert(cell.frame.origin, to: window)

@@ -51,7 +51,13 @@ class FriendAndGroupCell: UITableViewCell {
     func configure(
         imageURL: String,
         name: String) {
-        imageOfFriendOrGroup.kf.setImage(with: URL(string: imageURL))
+        
+        PhotoService.single.getImage(urlString: imageURL) { [weak self] image in
+            DispatchQueue.main.async {
+                self?.imageOfFriendOrGroup.image = image
+            }
+        }
+//        imageOfFriendOrGroup.kf.setImage(with: URL(string: imageURL))
         nameOfFriendOrGroup.text = name
     }
     

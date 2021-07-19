@@ -75,9 +75,6 @@ class NewsPhotoCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
         numberOfItemsInSection = currentNews.attachments.count
         photosOfOneAttachment = []
         videoImageURL = ""
-//        if currentNews.date == 1626276759 {
-//            var ttt = 0
-//        }
         
         if numberOfItemsInSection != 0 {
             for value in currentNews.attachments {

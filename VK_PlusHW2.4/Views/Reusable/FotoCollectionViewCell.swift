@@ -12,7 +12,7 @@ import RealmSwift
 class FotoCollectionViewCell: UICollectionViewCell {
 
 
-    @IBOutlet weak var FotoOfFriend: UIImageView!
+    @IBOutlet weak var photoOfFriend: UIImageView!
     @IBOutlet weak var serNumberPhoto: UILabel!
     @IBOutlet weak var serNumberUser: UILabel!
     @IBOutlet weak var numberLikes: UILabel!
@@ -125,7 +125,13 @@ class FotoCollectionViewCell: UICollectionViewCell {
         i_like: Bool,
         id: Int,
         serialNumberPhoto:Int) {
-        FotoOfFriend.kf.setImage(with: URL(string: imageURL))
+        PhotoService.single.getImage(urlString: imageURL) { [weak self] image in
+            DispatchQueue.main.async {
+                self?.photoOfFriend.image = image
+            }
+        }
+        
+//        FotoOfFriend.kf.setImage(with: URL(string: imageURL))
         numberLikes.text = String(numLikes)
         if i_like {
             buttonLikeColor.setImage(UIImage(named: "Like")!, for: .normal)

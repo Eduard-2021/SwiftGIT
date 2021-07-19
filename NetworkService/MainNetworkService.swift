@@ -7,7 +7,7 @@
 
 import UIKit
 import RealmSwift
-
+import PromiseKit
 
 final class MainNetworkService {
     static let photoTest = UIImageView()
@@ -16,7 +16,7 @@ final class MainNetworkService {
     private let dispGroup = DispatchGroup()
    
     
-    private func makeComponents(for path: PathOfMethodsVK) -> URLComponents {
+    func makeComponents(for path: PathOfMethodsVK) -> URLComponents {
         let urlComponent: URLComponents = {
             var url = URLComponents()
             url.scheme = "https"
@@ -38,9 +38,9 @@ final class MainNetworkService {
         urlComponents.queryItems?.append(contentsOf: [
             URLQueryItem(name: "fields", value: "photo_200"),
         ])
-        
+
         guard let url = urlComponents.url else {return}
-        
+
         session.dataTask(with: url) { (data, response, error) in
             if let data = data {
                 let vkResponse = try? JSONDecoder().decode(VKResponse<VKFriends>.self, from: data)
