@@ -92,15 +92,16 @@ class FriendInfoCollectionController: UICollectionViewController {
         for value in users! {
             let mainOperation = OperationQueue()
             let getPhotosOperation = GetPhotosOperation(userId: String(value.id))
-            //Если следующие 3 mainOperation.addOperation закоментироать и раскоментировать mainOperation.addOperations, то будет ошибка
-            mainOperation.addOperation(getPhotosOperation)
             
             let parsingPhotoOperation = ParsingPhotosOperation()
             parsingPhotoOperation.addDependency(getPhotosOperation)
-            mainOperation.addOperation(parsingPhotoOperation)
             
             let convertInRealmTypeOperation = ConvertInRealmTypeOperation()
             convertInRealmTypeOperation.addDependency(parsingPhotoOperation)
+            
+            //Если следующие 3 mainOperation.addOperation закоментироать и раскоментировать mainOperation.addOperations, то будет ошибка
+            mainOperation.addOperation(getPhotosOperation)
+            mainOperation.addOperation(parsingPhotoOperation)
             mainOperation.addOperation(convertInRealmTypeOperation)
             
 //            mainOperation.addOperations([getPhotosOperation, parsingPhotoOperation, convertInRealmTypeOperation, ], waitUntilFinished: true)
