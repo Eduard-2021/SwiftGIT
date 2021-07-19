@@ -106,6 +106,8 @@ class FriendInfoCollectionController: UICollectionViewController {
             
 //            mainOperation.addOperations([getPhotosOperation, parsingPhotoOperation, convertInRealmTypeOperation, ], waitUntilFinished: true)
             
+            var ttt = 0 //добавлено чтобы создать requests
+            
             let savePhotoToRealmOperation = SavePhotoToRealmOperation()
             savePhotoToRealmOperation.addDependency(convertInRealmTypeOperation)
             OperationQueue.main.addOperation(savePhotoToRealmOperation)
