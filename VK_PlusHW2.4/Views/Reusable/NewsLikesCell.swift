@@ -13,11 +13,13 @@ class NewsLikesCell: UITableViewCell {
 
     @IBOutlet weak var newsNumberOfLikes: UILabel!
     @IBOutlet weak var section: UILabel!
-    @IBOutlet weak var newsButtonLikesImage: UIButton!
+    @IBOutlet weak var newsButtonLikesImage: UIButton! = {
+        let button = UIButton()
+        button.titleLabel?.backgroundColor = .systemBackground
+        return button
+    }()
     @IBOutlet weak var newsNumberOfViews: UILabel!
     @IBAction func newsButtonLikesAction(_ sender: Any) {
-        
-
         if newsButtonLikesImage.currentImage == UIImage(named: "NoLike") {
             UIView.transition(with: newsButtonLikesImage,
                               duration: 1,
@@ -49,14 +51,32 @@ class NewsLikesCell: UITableViewCell {
             newsNumberOfLikes.text = String(newsVK[indexNews].likes.count)
         }
     }
-        
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
+    @IBOutlet weak var viewsButton: UIButton! = {
+        let button = UIButton()
+        button.titleLabel?.backgroundColor = .systemBackground
+        return button
+    }()
+    @IBOutlet weak var repostButton: UIButton! = {
+        let button = UIButton()
+        button.titleLabel?.backgroundColor = .systemBackground
+        return button
+    }()
+    @IBOutlet weak var commentButton: UIButton! = {
+        let button = UIButton()
+        button.titleLabel?.backgroundColor = .systemBackground
+        return button
+    }()
+    
+//
+//    override func awakeFromNib() {
+//        super.awakeFromNib()
+//    }
+//
+//    override func setSelected(_ selected: Bool, animated: Bool) {
+//        super.setSelected(selected, animated: animated)
+//
+//        let ttt = 0
+//    }
     
     func config(currentNews: OneNews, index: Int) {
         indexNews = index

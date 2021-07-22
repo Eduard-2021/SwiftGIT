@@ -13,6 +13,7 @@ class FriendAndGroupsHeader: UITableViewHeaderFooterView {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         label.textColor = UIColor.white
+        label.backgroundColor = UIColor.systemBlue
         return label
     }()
     

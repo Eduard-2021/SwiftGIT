@@ -422,13 +422,6 @@ class FriendsViewTableController: UIViewController, UITableViewDelegate, UITable
     func quickTransitionSection() {
         var nameOfSection = [String]()
         
-        
-//        for section in FriendsViewTableController.friendsSorted {
-//            if section.count != 0 {
-//            nameOfSection.append("\(section[0].fullName.first!)")
-//            }
-//        }
-//
         guard let users = users else {return}
         
         var sectionNumber = -1
@@ -481,6 +474,8 @@ class FriendsViewTableController: UIViewController, UITableViewDelegate, UITable
         }
         createBackground()
         view.addSubview(quickTransitionControl)
+        
+ 
     
     }
     

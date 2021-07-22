@@ -69,8 +69,8 @@ class NewsTableViewController: UITableViewController {
         tableView.register(nib, forCellReuseIdentifier: "NewsPhotoCell")
         nib = UINib(nibName: "NewsCommentCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "NewsCommentCell")
-        nib = UINib(nibName: "NewsLikesCell", bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: "NewsLikesCell")
+        nib = UINib(nibName: "NewsLikesCellSnapKit", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: "NewsLikesCellSnapKit")
         
     }
 
@@ -100,7 +100,7 @@ class NewsTableViewController: UITableViewController {
             cell.config(currentNews: currentNews)
             cellNews = cell
         case 3:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "NewsLikesCell", for: indexPath) as! NewsLikesCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "NewsLikesCellSnapKit", for: indexPath) as! NewsLikesCellSnapKit
             cell.config(currentNews: currentNews, index: indexPath.section)
             cellNews = cell
             
