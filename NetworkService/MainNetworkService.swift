@@ -127,9 +127,7 @@ final class MainNetworkService {
         .resume()
     }
     
-    func getNews(completion: @escaping (VKResponseDecodable<VKNewsItems>?,
-                                        VKResponse<VKNewsProfiles>?,
-                                        VKResponse<VKNewsGroups>?) -> Void) {
+    func getNews(startTime: Double, endTime: Double = Date().timeIntervalSince1970, nextGroup: String = "", completion: @escaping (VKResponseDecodable<VKNewsItems>?,VKResponse<VKNewsProfiles>?,VKResponse<VKNewsGroups>?, VKResponse<VKNextGroupOfNews>?) -> Void) {
         
         var vkResponseNewsItems : VKResponseDecodable<VKNewsItems>? = nil
         var vkResponseNewsProfiles : VKResponse<VKNewsProfiles>? = nil
@@ -139,8 +137,15 @@ final class MainNetworkService {
         
         urlComponents.queryItems?.append(contentsOf: [
             URLQueryItem(name: "filters", value: "post"),
-            URLQueryItem(name: "count", value: "20")
+            URLQueryItem(name: "end_time", value: "\(endTime)"),
+            URLQueryItem(name: "count", value: "20"),
         ])
+        if nextGroup != "" {
+            urlComponents.queryItems?.append(contentsOf: [URLQueryItem(name: "start_from", value: "\(nextGroup)")])
+        }
+        else {
+            urlComponents.queryItems?.append(contentsOf: [URLQueryItem(name: "start_time", value: "\(startTime)")])
+        }
         
         guard let url = urlComponents.url else {return}
         session.dataTask(with: url) {(data, response, error) in
@@ -157,10 +162,13 @@ final class MainNetworkService {
                     vkResponseNewsGroups = try? JSONDecoder().decode(VKResponse<VKNewsGroups>.self, from: data)
                 }
                 
+                let nextGroupFrom = try? JSONDecoder().decode(VKResponse<VKNextGroupOfNews>.self, from: data)
+                
                 self.dispGroup.notify(queue: .main) {
                 completion(vkResponseNewsItems,
                            vkResponseNewsProfiles,
-                           vkResponseNewsGroups)
+                           vkResponseNewsGroups,
+                           nextGroupFrom)
             }
                 
             }

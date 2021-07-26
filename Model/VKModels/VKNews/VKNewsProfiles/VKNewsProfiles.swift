@@ -6,5 +6,5 @@
 //
 
 struct VKNewsProfiles: Codable {
-    let profiles: [OneVKProfiles]
+    let profiles: [VKUser]
 }

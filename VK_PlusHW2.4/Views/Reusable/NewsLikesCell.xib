@@ -59,14 +59,15 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vam-zX-AMw">
-                        <rect key="frame" x="174" y="15" width="23" height="22"/>
+                        <rect key="frame" x="174" y="14" width="23" height="24"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <color key="tintColor" systemColor="systemGray2Color"/>
                         <state key="normal" image="bubble.left" catalog="system"/>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7hr-8L-MaJ">
                         <rect key="frame" x="287" y="15" width="21" height="22"/>
                         <color key="tintColor" systemColor="systemGray2Color"/>
-                        <state key="normal" image="arrowshape.turn.up.forward" catalog="system"/>
+                        <state key="normal" image="heart.fill" catalog="system"/>
                     </button>
                 </subviews>
                 <constraints>
@@ -102,9 +103,9 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="arrowshape.turn.up.forward" catalog="system" width="128" height="106"/>
         <image name="bubble.left" catalog="system" width="128" height="110"/>
         <image name="eye" catalog="system" width="128" height="81"/>
+        <image name="heart.fill" catalog="system" width="128" height="109"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

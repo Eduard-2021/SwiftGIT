@@ -374,7 +374,7 @@ class FriendsViewTableController: UIViewController, UITableViewDelegate, UITable
         var elementNumber = 0
         while users?[elementNumber].sectionNumber != section {elementNumber += 1 }
         if users?.first?.numberOfSection != 0 {
-            let header = FriendAndGroupsHeader()
+            let header = FriendAndGroupsAndNewsHeader()
             if let firstChapter = users?[elementNumber].fullName.first {
             header.configure(with: String(firstChapter))
             }
