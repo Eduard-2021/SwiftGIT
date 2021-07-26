@@ -49,6 +49,7 @@ class NewsTableViewController: UITableViewController {
 //                self.loadUsersInNews(usersNews: proFilesVKUnwrapped)
 //            }
             self.loadGroupsAndUsersForNews(refresh: true)
+            self.calculateTextHeight(from: 0, to: newsVK.count-1)
             self.tableView.reloadData()
         }
     }
@@ -165,6 +166,7 @@ class NewsTableViewController: UITableViewController {
 //                self.loadGroupsInNewVK(groupsNews: groupsVKUnwrapped)
 //                self.loadUsersInNews(usersNews: proFilesVKUnwrapped)
                 self.loadGroupsAndUsersForNews(refresh: true)
+                self.calculateTextHeight(from: 0, to: newsVKUnwrapped.count-1)
                 self.tableView.insertSections(indexSet, with: .automatic)
             }
     }
@@ -178,9 +180,22 @@ class NewsTableViewController: UITableViewController {
     }
 
     
+    private func calculateTextHeight(from: Int, to: Int){
+        for index in from...to {
+            newsVK[index].textHeight = findHeightForText(text: newsVK[index].text, havingWidth: self.view.frame.size.width - 116, andFont: UIFont.systemFont(ofSize: 17.0)).height
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        var pickheight = self.findHeightForText(text: newsVK[indexPath.section].text, havingWidth: self.view.frame.size.width - 116, andFont: UIFont.systemFont(ofSize: 17.0)).height
+        var pickheight: CGFloat = 0
+    
         
+//        switch indexPath.row {
+//            case 2:
+//                
+//        default:
+//            <#code#>
+//        }
         
         if dataForUpdateNewsCommentCell.buttonPressed && dataForUpdateNewsCommentCell.numberSectionForUpdate == indexPath.section {
             if (indexPath.row == 2) {
@@ -192,9 +207,10 @@ class NewsTableViewController: UITableViewController {
                     return UITableView.automaticDimension
                 }
             }
-            else {
-                return UITableView.automaticDimension
+            else if (indexPath.row == 1) {
+                return 30
             }
+                return UITableView.automaticDimension
         }
 
         if (indexPath.row == 2)  {
@@ -205,12 +221,14 @@ class NewsTableViewController: UITableViewController {
             }
             return pickheight
         }
-        else {
+        else
             if (indexPath.row == 3) && (pickheight <= 60) {
                 return 0.0
             }
+        else if (indexPath.row == 1) {
+                return 30
+            }
             return UITableView.automaticDimension
-        }
     }
  
     func findHeightForText(text: String, havingWidth widthValue: CGFloat, andFont font: UIFont) -> CGSize {
@@ -241,7 +259,7 @@ class NewsTableViewController: UITableViewController {
             cellNews = cell
         case 3:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ShowMoreOrLessCell", for: indexPath) as! ShowMoreOrLessCell
-            cell.config(numberSection: indexPath.section, needButtonMoreOrLesstext: needButtonMoreOrLesstext, moreButtonPressed: dataForUpdateNewsCommentCell.moreButtonPressed)
+            cell.config(numberSection: indexPath.section)
             cellNews = cell
         case 4:
             let cell = tableView.dequeueReusableCell(withIdentifier: "NewsLikesCellSnapKit", for: indexPath) as! NewsLikesCellSnapKit
@@ -290,6 +308,7 @@ extension NewsTableViewController: UITableViewDataSourcePrefetching {
                self.nextGroupNews = nextGroup.response.nextGroupFrom
                let indexSet = IndexSet(integersIn: newsVK.count ..< newsVK.count + newsVKUnwrapped.count)
                newsVK.append(contentsOf: newsVKUnwrapped)
+               self.calculateTextHeight(from: newsVK.count-newsVKUnwrapped.count, to: newsVK.count-1)
                self.loadGroupsAndUsersForNews(refresh: true)
                self.tableView.insertSections(indexSet, with: .automatic)
                self.isLoading = false

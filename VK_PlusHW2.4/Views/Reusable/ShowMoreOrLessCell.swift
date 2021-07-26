@@ -70,7 +70,7 @@ class ShowMoreOrLessCell: UITableViewCell {
     }
     
     
-    func config(numberSection: Int, needButtonMoreOrLesstext: Bool, moreButtonPressed: Bool = false){
+    func config(numberSection: Int){
         dataForUpgrate.numberSectionForUpdate = numberSection
  
         if let sectionHasButtonMoreLess = NewsTableViewController.sectionsWithFullComments[numberSection] {

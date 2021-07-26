@@ -29,11 +29,6 @@ class NewsPhotoCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
         let cellName = UINib(nibName: "NewsCollectionViewCell", bundle: nil)
         newsCollectionView.register(cellName, forCellWithReuseIdentifier: "NewsCollectionViewCell")
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         numberOfItemsInSection

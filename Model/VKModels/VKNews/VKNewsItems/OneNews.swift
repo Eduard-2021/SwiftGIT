@@ -5,6 +5,8 @@
 //  Created by Eduard on 01.07.2021.
 //
 
+import  UIKit
+
 struct OneNews: Decodable {
     var sourceID: Int
     var date: Double
@@ -17,6 +19,7 @@ struct OneNews: Decodable {
     var postID: Int
     var newsGroupVK = VKGroup(idGroup: 0, nameGroup: "", imageGroupURL: "")
     var newsUserVK = VKUser(idUser: 0, firstName: "", lastName: "", userAvatarURL: "")
+    var textHeight: CGFloat = 0.0
 
     
     /*
