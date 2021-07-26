@@ -50,6 +50,7 @@ class NewsTableViewController: UITableViewController {
 //            }
             self.loadGroupsAndUsersForNews(refresh: true)
             self.calculateTextHeight(from: 0, to: newsVK.count-1)
+            newsVK = self.calculatingNumberPhotoInAttachment(news: newsVK)
             self.tableView.reloadData()
         }
     }
@@ -167,6 +168,7 @@ class NewsTableViewController: UITableViewController {
 //                self.loadUsersInNews(usersNews: proFilesVKUnwrapped)
                 self.loadGroupsAndUsersForNews(refresh: true)
                 self.calculateTextHeight(from: 0, to: newsVKUnwrapped.count-1)
+                newsVK = self.calculatingNumberPhotoInAttachment(news: newsVK)
                 self.tableView.insertSections(indexSet, with: .automatic)
             }
     }
@@ -186,49 +188,54 @@ class NewsTableViewController: UITableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        var pickheight: CGFloat = 0
+    private func calculatingNumberPhotoInAttachment(news: [OneNews]) -> [OneNews] {
+        var returnNewsVK = news
+        for (index, oneNews) in news.enumerated() {
+            var numberPhoto = 0
+            for value in oneNews.attachments {
+                if value.type == "photo" {
+                    numberPhoto += 1
+                }
+            }
+            returnNewsVK[index].numberPhotoInAttachement = numberPhoto
+        }
+        return returnNewsVK
+    }
     
-        
-//        switch indexPath.row {
-//            case 2:
-//                
-//        default:
-//            <#code#>
-//        }
-        
-        if dataForUpdateNewsCommentCell.buttonPressed && dataForUpdateNewsCommentCell.numberSectionForUpdate == indexPath.section {
-            if (indexPath.row == 2) {
-                if dataForUpdateNewsCommentCell.commentCellIsSmall {
-                    if pickheight > maxHeightForCellCommets { pickheight = maxHeightForCellCommets }
-                    return pickheight
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        var pickheight = newsVK[indexPath.section].textHeight
+    
+        switch indexPath.row {
+            case 1:
+                switch newsVK[indexPath.section].numberPhotoInAttachement {
+                case 0:
+                    return 0
+                case 1:
+                    return view.frame.size.width
+                case 2,3:
+                    return view.frame.size.width/3
+                default:
+                    return view.frame.size.width*1.4
                 }
-                else {
-                    return UITableView.automaticDimension
+                
+            case 2:
+                if pickheight > maxHeightForCellCommets {
+                    pickheight = maxHeightForCellCommets
+                    guard let cellWithButtonMoreLess = NewsTableViewController.sectionsWithFullComments[indexPath.section],
+                          cellWithButtonMoreLess else {
+                        NewsTableViewController.sectionsWithFullComments[indexPath.section] = false
+                        return pickheight}
                 }
-            }
-            else if (indexPath.row == 1) {
-                return 30
-            }
+                return UITableView.automaticDimension
+            case 3:
+                if NewsTableViewController.sectionsWithFullComments[indexPath.section] == nil {
+                    return 0
+                }
+                return UITableView.automaticDimension
+            default:
                 return UITableView.automaticDimension
         }
-
-        if (indexPath.row == 2)  {
-                
-            if pickheight > maxHeightForCellCommets {
-                pickheight = maxHeightForCellCommets
-                NewsTableViewController.sectionsWithFullComments[indexPath.section] = false
-            }
-            return pickheight
-        }
-        else
-            if (indexPath.row == 3) && (pickheight <= 60) {
-                return 0.0
-            }
-        else if (indexPath.row == 1) {
-                return 30
-            }
-            return UITableView.automaticDimension
+    
     }
  
     func findHeightForText(text: String, havingWidth widthValue: CGFloat, andFont font: UIFont) -> CGSize {
@@ -309,6 +316,7 @@ extension NewsTableViewController: UITableViewDataSourcePrefetching {
                let indexSet = IndexSet(integersIn: newsVK.count ..< newsVK.count + newsVKUnwrapped.count)
                newsVK.append(contentsOf: newsVKUnwrapped)
                self.calculateTextHeight(from: newsVK.count-newsVKUnwrapped.count, to: newsVK.count-1)
+               newsVK = self.calculatingNumberPhotoInAttachment(news: newsVK)
                self.loadGroupsAndUsersForNews(refresh: true)
                self.tableView.insertSections(indexSet, with: .automatic)
                self.isLoading = false

@@ -39,7 +39,6 @@ class ShowMoreOrLessCell: UITableViewCell {
             showButton.setTitle("Show less ...", for: [])
             dataForUpgrate.commentCellIsSmall = false
             dataForUpgrate.buttonPressed = true
-//            dataForUpgrate.numberSection = numberSectionCurrent
             dataForUpgrate.moreButtonPressed = true
             let dates = ["dates":dataForUpgrate]
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "changeHeightOfCommentCell"), object: nil, userInfo: dates)
@@ -48,7 +47,6 @@ class ShowMoreOrLessCell: UITableViewCell {
             showButton.setTitle("Show more ...", for: [])
             dataForUpgrate.commentCellIsSmall = true
             dataForUpgrate.buttonPressed = true
-//            ShowMoreOrLessCell.numberSection = numberSectionCurrent
             dataForUpgrate.moreButtonPressed = false
             let dates = ["dates":dataForUpgrate]
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "changeHeightOfCommentCell"), object: nil, userInfo: dates)

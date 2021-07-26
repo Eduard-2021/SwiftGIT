@@ -20,6 +20,7 @@ struct OneNews: Decodable {
     var newsGroupVK = VKGroup(idGroup: 0, nameGroup: "", imageGroupURL: "")
     var newsUserVK = VKUser(idUser: 0, firstName: "", lastName: "", userAvatarURL: "")
     var textHeight: CGFloat = 0.0
+    var numberPhotoInAttachement = 0
 
     
     /*
