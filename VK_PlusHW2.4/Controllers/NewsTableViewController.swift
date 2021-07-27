@@ -288,8 +288,9 @@ class NewsTableViewController: UITableViewController {
             NewsTableViewController.sectionsWithFullComments[dataForUpdateNewsCommentCell.numberSectionForUpdate] = false
         }
         
-        let indexSet = IndexSet(integer: dataForUpdateNewsCommentCell.numberSectionForUpdate)
-        tableView.reloadSections(indexSet, with: .automatic)
+//        let indexSet = IndexSet(integer: dataForUpdateNewsCommentCell.numberSectionForUpdate)
+//        tableView.reloadSections(indexSet, with: .automatic)
+        tableView.reloadRows(at: [IndexPath(row: 2, section: dataForUpdateNewsCommentCell.numberSectionForUpdate),IndexPath(row: 3, section: dataForUpdateNewsCommentCell.numberSectionForUpdate)], with: .automatic)
     }
 
 //    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
