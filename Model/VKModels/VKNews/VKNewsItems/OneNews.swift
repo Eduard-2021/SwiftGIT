@@ -8,32 +8,19 @@
 import  UIKit
 
 struct OneNews: Decodable {
-    var sourceID: Int
-    var date: Double
-    var text: String
+    var sourceID: Int = 0
+    var date: Double = 0.0
+    var text: String = ""
     var attachments = [VKAttachmentCommon]()
     var comments = VKNewsComments()
     var likes = VKNewsLikes()
     var reposts = VKNewsReposts()
     var views = VKNewsViews()
-    var postID: Int
+    var postID: Int = 0
     var newsGroupVK = VKGroup(idGroup: 0, nameGroup: "", imageGroupURL: "")
     var newsUserVK = VKUser(idUser: 0, firstName: "", lastName: "", userAvatarURL: "")
     var textHeight: CGFloat = 0.0
     var numberPhotoInAttachement = 0
-
-    
-    /*
-     source_id": -161486117,
-                     "date": 1626276759,
-                     "can_doubt_category": false,
-                     "can_set_category": false,
-                     "post_type": "post",
-                     "text": "Трейлер второго сезона сериала «Внешние отмели».\n\nПремьера: 30 июля",
-                     "marked_as_ads": 0,
-                     "attachments": [
-     */
-    
 
 struct VKAttachmentCommon {
     var type : String = ""

@@ -40,7 +40,6 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="conststrainForCollection" destination="EJN-6y-Eeo" id="bh3-qE-PgP"/>
                 <outlet property="newsCollectionView" destination="1Ch-4h-oaF" id="tvJ-fO-xOt"/>
             </connections>
             <point key="canvasLocation" x="16.666666666666668" y="149.66517857142856"/>

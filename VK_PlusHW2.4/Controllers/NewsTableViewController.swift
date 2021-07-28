@@ -15,9 +15,9 @@ class NewsTableViewController: UITableViewController {
     private let durationOneDay : Double = 60*60*24
     private var nextGroupNews = ""
     private var isLoading = false
-    private var needButtonMoreOrLesstext = false
-    private var cellNumberTwoUpgrated = false
-    private var sectionForUpgrate : Int!
+//    private var needButtonMoreOrLesstext = false
+//    private var cellNumberTwoUpgrated = false
+//    private var sectionForUpgrate : Int!
     private var dataForUpdateNewsCommentCell=necessaryDatesForChangeSizeNewsCommentCell()
     static var sectionsWithFullComments = [Int:Bool]()
     private let maxHeightForCellCommets: CGFloat = 60
@@ -51,6 +51,7 @@ class NewsTableViewController: UITableViewController {
             self.loadGroupsAndUsersForNews(refresh: true)
             self.calculateTextHeight(from: 0, to: newsVK.count-1)
             newsVK = self.calculatingNumberPhotoInAttachment(news: newsVK)
+            newsVK = self.calculationAspectRatioVKPhoto(news: newsVK)
             self.tableView.reloadData()
         }
     }
@@ -150,11 +151,13 @@ class NewsTableViewController: UITableViewController {
             tableView.refreshControl?.beginRefreshing()
             let mostFreshNewsDate = newsVK.first?.date ?? currentTime
             networkService.getNews(startTime: mostFreshNewsDate + 1) { [weak self] (vkResponseItems,vkResponsePRofiles,vkResponseGroups, vkResponseNextGroup ) in
-                guard let newsVKUnwrapped = vkResponseItems?.response.items,
+                guard var newsVKUnwrapped = vkResponseItems?.response.items,
                       let self=self
                 else {return}
                 self.tableView.refreshControl?.endRefreshing()
                 guard newsVKUnwrapped.count > 0 else { return }
+                newsVKUnwrapped = self.calculatingNumberPhotoInAttachment(news: newsVKUnwrapped)
+                newsVKUnwrapped = self.calculationAspectRatioVKPhoto(news: newsVKUnwrapped)
                 newsVK = newsVKUnwrapped + newsVK
                 let indexSet = IndexSet(integersIn: 0..<newsVKUnwrapped.count)
                 
@@ -168,7 +171,6 @@ class NewsTableViewController: UITableViewController {
 //                self.loadUsersInNews(usersNews: proFilesVKUnwrapped)
                 self.loadGroupsAndUsersForNews(refresh: true)
                 self.calculateTextHeight(from: 0, to: newsVKUnwrapped.count-1)
-                newsVK = self.calculatingNumberPhotoInAttachment(news: newsVK)
                 self.tableView.insertSections(indexSet, with: .automatic)
             }
     }
@@ -202,6 +204,23 @@ class NewsTableViewController: UITableViewController {
         return returnNewsVK
     }
     
+    private func calculationAspectRatioVKPhoto(news: [OneNews]) -> [OneNews]{
+        var returnNewsVK = news
+        for (indexOneNews, valueOneNews) in news.enumerated() {
+                for (indexCurrentAttachment, valueCurrentAttachment) in valueOneNews.attachments.enumerated() {
+                    if valueCurrentAttachment.type == "photo" {
+//                        if valueCurrentAttachment.attachmentVKPhoto.photo.id == 457269496 {
+//                                               var rr = 0
+//                                           }
+                        let heightCurrentPhoto = Double(valueCurrentAttachment.attachmentVKPhoto.photo.sizes[0].height)
+                        let widthCurrentPhoto = Double(valueCurrentAttachment.attachmentVKPhoto.photo.sizes[0].width)
+                        returnNewsVK[indexOneNews].attachments[indexCurrentAttachment].attachmentVKPhoto.photo.aspectRatio = heightCurrentPhoto/widthCurrentPhoto
+                    }
+                }
+        }
+        return returnNewsVK
+    }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         var pickheight = newsVK[indexPath.section].textHeight
     
@@ -211,9 +230,19 @@ class NewsTableViewController: UITableViewController {
                 case 0:
                     return 0
                 case 1:
-                    return view.frame.size.width
-                case 2,3:
+                    var proportion = 1.0
+                    for value in newsVK[indexPath.section].attachments {
+                        if value.type == "photo" {
+                            proportion = value.attachmentVKPhoto.photo.aspectRatio
+                        }
+                    }
+                    return CGFloat(Double(view.frame.size.width) * proportion)
+                case 2:
+                    return view.frame.size.width/2
+                case 3:
                     return view.frame.size.width/3
+                case 5:
+                    return view.frame.size.width/3 + view.frame.size.width/2 + 7
                 default:
                     return view.frame.size.width*1.4
                 }
@@ -287,17 +316,9 @@ class NewsTableViewController: UITableViewController {
         else {
             NewsTableViewController.sectionsWithFullComments[dataForUpdateNewsCommentCell.numberSectionForUpdate] = false
         }
-        
-//        let indexSet = IndexSet(integer: dataForUpdateNewsCommentCell.numberSectionForUpdate)
-//        tableView.reloadSections(indexSet, with: .automatic)
         tableView.reloadRows(at: [IndexPath(row: 2, section: dataForUpdateNewsCommentCell.numberSectionForUpdate),IndexPath(row: 3, section: dataForUpdateNewsCommentCell.numberSectionForUpdate)], with: .automatic)
     }
 
-//    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//            let header = FriendAndGroupsAndNewsHeader()
-//            header.configure(with: "", colorOfCell: .white)
-//            return header
-//    }
 }
 
 
@@ -318,6 +339,7 @@ extension NewsTableViewController: UITableViewDataSourcePrefetching {
                newsVK.append(contentsOf: newsVKUnwrapped)
                self.calculateTextHeight(from: newsVK.count-newsVKUnwrapped.count, to: newsVK.count-1)
                newsVK = self.calculatingNumberPhotoInAttachment(news: newsVK)
+               newsVK = self.calculationAspectRatioVKPhoto(news: newsVK)
                self.loadGroupsAndUsersForNews(refresh: true)
                self.tableView.insertSections(indexSet, with: .automatic)
                self.isLoading = false
