@@ -18,7 +18,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xOF-ZC-t8n" customClass="AvatarBackShadow" customModule="VK_PlusHW2_4" customModuleProvider="target">
-                        <rect key="frame" x="5" y="5" width="80" height="80"/>
+                        <rect key="frame" x="5" y="10" width="80" height="80"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1zy-cZ-LbS" customClass="AvatarImage" customModule="VK_PlusHW2_4" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
@@ -35,7 +35,7 @@
                         </constraints>
                     </view>
                     <label userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qj7-fG-0XE">
-                        <rect key="frame" x="95" y="34.5" width="283" height="21"/>
+                        <rect key="frame" x="95" y="39.5" width="283" height="21"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
@@ -45,10 +45,8 @@
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="xOF-ZC-t8n" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="3E9-27-57B"/>
-                    <constraint firstAttribute="bottom" secondItem="xOF-ZC-t8n" secondAttribute="bottom" constant="5" id="41Q-s4-2e3"/>
                     <constraint firstItem="xOF-ZC-t8n" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="JTO-dU-kct"/>
                     <constraint firstItem="qj7-fG-0XE" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Jdq-9N-Lfn"/>
-                    <constraint firstItem="xOF-ZC-t8n" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="KfK-BR-4Td"/>
                     <constraint firstItem="qj7-fG-0XE" firstAttribute="leading" secondItem="xOF-ZC-t8n" secondAttribute="trailing" constant="10" id="lm6-gg-vsQ"/>
                     <constraint firstAttribute="trailing" secondItem="qj7-fG-0XE" secondAttribute="trailing" constant="10" id="quC-NP-7t0"/>
                 </constraints>

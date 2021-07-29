@@ -7,14 +7,7 @@
 
 import UIKit
 
-//@IBOutlet weak var showButton: UIButton!
-
 class ShowMoreOrLessCell: UITableViewCell {
-    
-//    static var numberSection: Int!
-//    static var commentCellIsSmall = true
-//    static var buttonPressed = false
-//    var numberSectionCurrent: Int!
     
     var dataForUpgrate = necessaryDatesForChangeSizeNewsCommentCell()
     
@@ -79,20 +72,6 @@ class ShowMoreOrLessCell: UITableViewCell {
             else {showButton.setTitle("Show more ...", for: [])}
         }
         
-//
-//        if !moreButtonPressed {
-//            showButton.setTitle("Show more ...", for: [])
-//        }
-//        else {
-//            showButton.setTitle("Show less ...", for: [])
-//            dataForUpgrate.commentCellIsSmall = true
-//        }
-//        if !needButtonMoreOrLesstext {
-//            showButton.isHidden = true
-//        }
-//        else {
-//            showButton.isHidden = false
-//        }
     }
     
 }

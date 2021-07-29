@@ -9,6 +9,8 @@ import UIKit
 //import Kingfisher
 
 class NewsAvatarCell: UITableViewCell {
+    
+    private let newsAvatarImageSize: CGFloat = 60
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,6 +35,11 @@ class NewsAvatarCell: UITableViewCell {
             newsAvatarName.text = currentNews.newsUserVK.firstName + " " + currentNews.newsUserVK.lastName
         }
         newsAvatarDate.text = converDate(dateNoConvert: currentNews.date)
+        
+        //Задание в коде (в методе конфигурации, а не в связанном с ImageView классе) размера аватара и его закругление
+        newsAvatarImage.widthAnchor.constraint(equalToConstant: newsAvatarImageSize).isActive=true
+        newsAvatarImage.heightAnchor.constraint(equalToConstant: newsAvatarImageSize).isActive=true
+        newsAvatarImage.layer.cornerRadius = newsAvatarImageSize/2
     }
     
     
