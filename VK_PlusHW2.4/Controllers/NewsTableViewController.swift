@@ -186,7 +186,7 @@ class NewsTableViewController: UITableViewController {
     
     private func calculateTextHeight(from: Int, to: Int){
         for index in from...to {
-            newsVK[index].textHeight = findHeightForText(text: newsVK[index].text, havingWidth: self.view.frame.size.width - 116, andFont: UIFont.systemFont(ofSize: 17.0)).height
+            newsVK[index].textHeight = findHeightForText(text: newsVK[index].text, havingWidth: self.view.frame.size.width, andFont: UIFont.systemFont(ofSize: 17.0)).height
         }
     }
     
