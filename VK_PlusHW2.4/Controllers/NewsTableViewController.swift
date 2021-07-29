@@ -340,7 +340,7 @@ extension NewsTableViewController: UITableViewDataSourcePrefetching {
                self.calculateTextHeight(from: newsVK.count-newsVKUnwrapped.count, to: newsVK.count-1)
                newsVK = self.calculatingNumberPhotoInAttachment(news: newsVK)
                newsVK = self.calculationAspectRatioVKPhoto(news: newsVK)
-               self.loadGroupsAndUsersForNews(refresh: true)
+               self.loadGroupsAndUsersForNews(refresh: false)
                self.tableView.insertSections(indexSet, with: .automatic)
                self.isLoading = false
            }
