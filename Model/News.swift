@@ -6,7 +6,7 @@
 //
 var newsVK = [OneNews]()
 
-struct necessaryDatesForChangeSizeNewsCommentCell {
+struct NecessaryDatesForChangeSizeNewsCommentCell {
     var numberSectionForUpdate:Int!
     var commentCellIsSmall = true
     var buttonPressed = false

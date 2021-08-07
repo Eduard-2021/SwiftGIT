@@ -9,7 +9,8 @@ import UIKit
 
 class ShowMoreOrLessCell: UITableViewCell {
     
-    var dataForUpgrate = necessaryDatesForChangeSizeNewsCommentCell()
+    var dateForUpgrate = NecessaryDatesForChangeSizeNewsCommentCell()
+    var mainNewsVC: DelegeteForChangeSizeNewsCommenCell?
     
     private var showButton: UIButton = {
         let button = UIButton()
@@ -30,19 +31,21 @@ class ShowMoreOrLessCell: UITableViewCell {
     @objc func showButtonPushed() {
         if showButton.titleLabel?.text == "Show more ..." {
             showButton.setTitle("Show less ...", for: [])
-            dataForUpgrate.commentCellIsSmall = false
-            dataForUpgrate.buttonPressed = true
-            dataForUpgrate.moreButtonPressed = true
-            let dates = ["dates":dataForUpgrate]
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "changeHeightOfCommentCell"), object: nil, userInfo: dates)
+            dateForUpgrate.commentCellIsSmall = false
+            dateForUpgrate.buttonPressed = true
+            dateForUpgrate.moreButtonPressed = true
+            let dates = ["dates":dateForUpgrate]
+            mainNewsVC?.changeSizeOfCommentCell(data: dateForUpgrate)
+//            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "changeHeightOfCommentCell"), object: nil, userInfo: dates)
         }
         else {
             showButton.setTitle("Show more ...", for: [])
-            dataForUpgrate.commentCellIsSmall = true
-            dataForUpgrate.buttonPressed = true
-            dataForUpgrate.moreButtonPressed = false
-            let dates = ["dates":dataForUpgrate]
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "changeHeightOfCommentCell"), object: nil, userInfo: dates)
+            dateForUpgrate.commentCellIsSmall = true
+            dateForUpgrate.buttonPressed = true
+            dateForUpgrate.moreButtonPressed = false
+            let dates = ["dates":dateForUpgrate]
+            mainNewsVC?.changeSizeOfCommentCell(data: dateForUpgrate)
+//            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "changeHeightOfCommentCell"), object: nil, userInfo: dates)
         }
     }
     
@@ -62,12 +65,12 @@ class ShowMoreOrLessCell: UITableViewCell {
     
     
     func config(numberSection: Int){
-        dataForUpgrate.numberSectionForUpdate = numberSection
+        dateForUpgrate.numberSectionForUpdate = numberSection
  
         if let sectionHasButtonMoreLess = NewsTableViewController.sectionsWithFullComments[numberSection] {
             if sectionHasButtonMoreLess {
                 showButton.setTitle("Show less ...", for: [])
-                dataForUpgrate.commentCellIsSmall = true
+                dateForUpgrate.commentCellIsSmall = true
             }
             else {showButton.setTitle("Show more ...", for: [])}
         }

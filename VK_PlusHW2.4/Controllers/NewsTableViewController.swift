@@ -7,18 +7,20 @@
 
 import UIKit
 
+protocol DelegeteForChangeSizeNewsCommenCell {
+    func changeSizeOfCommentCell(data: NecessaryDatesForChangeSizeNewsCommentCell)
+}
 
-class NewsTableViewController: UITableViewController {
+class NewsTableViewController: UITableViewController, DelegeteForChangeSizeNewsCommenCell {
+    
+    let showMoreOrLessCell = ShowMoreOrLessCell()
     
     private let networkService = MainNetworkService()
     private let currentTime = Date().timeIntervalSince1970
     private let durationOneDay : Double = 60*60*24
     private var nextGroupNews = ""
     private var isLoading = false
-//    private var needButtonMoreOrLesstext = false
-//    private var cellNumberTwoUpgrated = false
-//    private var sectionForUpgrate : Int!
-    private var dataForUpdateNewsCommentCell=necessaryDatesForChangeSizeNewsCommentCell()
+    private var dataForUpdateNewsCommentCell=NecessaryDatesForChangeSizeNewsCommentCell()
     static var sectionsWithFullComments = [Int:Bool]()
     private let maxHeightForCellCommets: CGFloat = 60
     
@@ -30,7 +32,10 @@ class NewsTableViewController: UITableViewController {
         registrationCells()
         setupRefreshControl()
         tableView.prefetchDataSource = self
-        NotificationCenter.default.addObserver(self, selector: #selector(changeHeightOfCommentCell), name: NSNotification.Name(rawValue: "changeHeightOfCommentCell"), object: nil)
+        
+        showMoreOrLessCell.mainNewsVC = self
+        // Использование Notification Center для обмена информацией о нажатии кнопок More.../Less...
+//        NotificationCenter.default.addObserver(self, selector: #selector(changeHeightOfCommentCell), name: NSNotification.Name(rawValue: "changeHeightOfCommentCell"), object: nil)
 
     }
     
@@ -209,9 +214,6 @@ class NewsTableViewController: UITableViewController {
         for (indexOneNews, valueOneNews) in news.enumerated() {
                 for (indexCurrentAttachment, valueCurrentAttachment) in valueOneNews.attachments.enumerated() {
                     if valueCurrentAttachment.type == "photo" {
-//                        if valueCurrentAttachment.attachmentVKPhoto.photo.id == 457269496 {
-//                                               var rr = 0
-//                                           }
                         let heightCurrentPhoto = Double(valueCurrentAttachment.attachmentVKPhoto.photo.sizes[0].height)
                         let widthCurrentPhoto = Double(valueCurrentAttachment.attachmentVKPhoto.photo.sizes[0].width)
                         returnNewsVK[indexOneNews].attachments[indexCurrentAttachment].attachmentVKPhoto.photo.aspectRatio = heightCurrentPhoto/widthCurrentPhoto
@@ -295,6 +297,7 @@ class NewsTableViewController: UITableViewController {
             cellNews = cell
         case 3:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ShowMoreOrLessCell", for: indexPath) as! ShowMoreOrLessCell
+            cell.mainNewsVC = self
             cell.config(numberSection: indexPath.section)
             cellNews = cell
         case 4:
@@ -307,8 +310,9 @@ class NewsTableViewController: UITableViewController {
         return cellNews
     }
     
+    //Метод отработки данных, полученных через Notification Center (в данной реализации не используется)
     @objc func changeHeightOfCommentCell(_ notification: Notification){
-        guard let data = notification.userInfo as? [String: necessaryDatesForChangeSizeNewsCommentCell] else {return}
+        guard let data = notification.userInfo as? [String: NecessaryDatesForChangeSizeNewsCommentCell] else {return}
         dataForUpdateNewsCommentCell = data["dates"]!
         
         if  dataForUpdateNewsCommentCell.moreButtonPressed {
@@ -319,7 +323,19 @@ class NewsTableViewController: UITableViewController {
         tableView.reloadRows(at: [IndexPath(row: 2, section: dataForUpdateNewsCommentCell.numberSectionForUpdate),IndexPath(row: 3, section: dataForUpdateNewsCommentCell.numberSectionForUpdate)], with: .automatic)
     }
 
+    func changeSizeOfCommentCell(data: NecessaryDatesForChangeSizeNewsCommentCell){
+        dataForUpdateNewsCommentCell = data
+        
+        if  dataForUpdateNewsCommentCell.moreButtonPressed {
+            NewsTableViewController.sectionsWithFullComments[dataForUpdateNewsCommentCell.numberSectionForUpdate] = true}
+        else {
+            NewsTableViewController.sectionsWithFullComments[dataForUpdateNewsCommentCell.numberSectionForUpdate] = false
+        }
+        tableView.reloadRows(at: [IndexPath(row: 2, section: dataForUpdateNewsCommentCell.numberSectionForUpdate),IndexPath(row: 3, section: dataForUpdateNewsCommentCell.numberSectionForUpdate)], with: .automatic)
+    }
+    
 }
+
 
 
 extension NewsTableViewController: UITableViewDataSourcePrefetching {
