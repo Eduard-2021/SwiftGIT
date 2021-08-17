@@ -67,16 +67,6 @@ class NewsLikesCell: UITableViewCell {
         return button
     }()
     
-//
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//    }
-//
-//    override func setSelected(_ selected: Bool, animated: Bool) {
-//        super.setSelected(selected, animated: animated)
-//
-//        let ttt = 0
-//    }
     
     func config(currentNews: OneNews, index: Int) {
         indexNews = index
@@ -88,6 +78,6 @@ class NewsLikesCell: UITableViewCell {
         }
         else {
             newsButtonLikesImage.setImage(UIImage(named: "NoLike")!, for: .normal)
-        }
+         }
     }
 }

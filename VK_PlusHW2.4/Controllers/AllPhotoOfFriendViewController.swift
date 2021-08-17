@@ -33,7 +33,6 @@ class AllPhotoOfFriendViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
    
-        
         leftPhoto.frame = CGRect(x: -self.view.bounds.width, y: pozitionY, width: self.view.bounds.width, height: self.view.bounds.width)
         rightPhoto.frame = CGRect(x: self.view.bounds.width, y: pozitionY, width: self.view.bounds.width, height: self.view.bounds.width)
         centerPhoto.frame = CGRect(x: 0, y: pozitionY, width: self.view.bounds.width, height: self.view.bounds.width)

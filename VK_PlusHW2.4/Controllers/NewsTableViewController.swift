@@ -302,7 +302,9 @@ class NewsTableViewController: UITableViewController, DelegeteForChangeSizeNewsC
             cellNews = cell
         case 4:
             let cell = tableView.dequeueReusableCell(withIdentifier: "NewsLikesCellSnapKit", for: indexPath) as! NewsLikesCellSnapKit
-            cell.config(currentNews: currentNews, index: indexPath.section)
+            //Создание с помощью Symple Factory свойства со всеми необходимыми данными, преобразоваными в простой формат, для конфигурирования ячейки
+            let currentNewsAndIndex = NewsLikesViewModelFactory().constructViewModels(from: currentNews, and: indexPath.section)
+            cell.config(currentNewsAndIndex: currentNewsAndIndex)
             cellNews = cell
             
         default : break
