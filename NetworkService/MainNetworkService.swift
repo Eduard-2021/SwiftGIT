@@ -5,21 +5,18 @@
 //  Created by Eduard on 25.05.2021.
 //
 
-import Foundation
 import UIKit
 import RealmSwift
-
+import PromiseKit
 
 final class MainNetworkService {
     static let photoTest = UIImageView()
     
     private let apiVersion = "5.130"
     private let dispGroup = DispatchGroup()
-    private var vkResponseNewsItems : VKResponseDecodable<VKNewsItems>? = nil
-    private var vkResponseNewsProfiles : VKResponse<VKNewsProfiles>? = nil
-    private var vkResponseNewsGroups : VKResponse<VKNewsGroups>? = nil
+   
     
-    private func makeComponents(for path: PathOfMethodsVK) -> URLComponents {
+    func makeComponents(for path: PathOfMethodsVK) -> URLComponents {
         let urlComponent: URLComponents = {
             var url = URLComponents()
             url.scheme = "https"
@@ -41,9 +38,9 @@ final class MainNetworkService {
         urlComponents.queryItems?.append(contentsOf: [
             URLQueryItem(name: "fields", value: "photo_200"),
         ])
-        
+
         guard let url = urlComponents.url else {return}
-        
+
         session.dataTask(with: url) { (data, response, error) in
             if let data = data {
                 let vkResponse = try? JSONDecoder().decode(VKResponse<VKFriends>.self, from: data)
@@ -66,8 +63,7 @@ final class MainNetworkService {
             URLQueryItem(name: "extended", value: "1"),
             URLQueryItem(name: "owner_id", value: "\(userId)")
         ])
-        guard let url = urlComponents.url else
-        { return }
+        guard let url = urlComponents.url else {return}
         session.dataTask(with: url) { (data, response, error) in
             if let data = data {
                 let vkResponse = try? JSONDecoder().decode(VKResponse<AllPhotoOfFriend>.self, from: data)
@@ -131,35 +127,48 @@ final class MainNetworkService {
         .resume()
     }
     
-    func getNews(completion: @escaping (VKResponseDecodable<VKNewsItems>?,
-                                        VKResponse<VKNewsProfiles>?,
-                                        VKResponse<VKNewsGroups>?) -> Void) {
+    func getNews(startTime: Double, endTime: Double = Date().timeIntervalSince1970, nextGroup: String = "", completion: @escaping (VKResponseDecodable<VKNewsItems>?,VKResponse<VKNewsProfiles>?,VKResponse<VKNewsGroups>?, VKResponse<VKNextGroupOfNews>?) -> Void) {
+        
+        var vkResponseNewsItems : VKResponseDecodable<VKNewsItems>? = nil
+        var vkResponseNewsProfiles : VKResponse<VKNewsProfiles>? = nil
+        var vkResponseNewsGroups : VKResponse<VKNewsGroups>? = nil
         let session = URLSession.shared
         var urlComponents = makeComponents(for: .getNews)
+        
         urlComponents.queryItems?.append(contentsOf: [
             URLQueryItem(name: "filters", value: "post"),
-            URLQueryItem(name: "count", value: "20")
+            URLQueryItem(name: "end_time", value: "\(endTime)"),
+            URLQueryItem(name: "count", value: "20"),
         ])
+        if nextGroup != "" {
+            urlComponents.queryItems?.append(contentsOf: [URLQueryItem(name: "start_from", value: "\(nextGroup)")])
+        }
+        else {
+            urlComponents.queryItems?.append(contentsOf: [URLQueryItem(name: "start_time", value: "\(startTime)")])
+        }
         
         guard let url = urlComponents.url else {return}
         session.dataTask(with: url) {(data, response, error) in
             if let data = data {
                 DispatchQueue.global().async(group: self.dispGroup) {
-                    self.vkResponseNewsItems = try? JSONDecoder().decode(VKResponseDecodable<VKNewsItems>.self, from: data)
+                    vkResponseNewsItems = try? JSONDecoder().decode(VKResponseDecodable<VKNewsItems>.self, from: data)
                 }
                 
                 DispatchQueue.global().async(group: self.dispGroup) {
-                    self.vkResponseNewsProfiles = try? JSONDecoder().decode(VKResponse<VKNewsProfiles>.self, from: data)
+                    vkResponseNewsProfiles = try? JSONDecoder().decode(VKResponse<VKNewsProfiles>.self, from: data)
                 }
                 
                 DispatchQueue.global().async(group: self.dispGroup) {
-                    self.vkResponseNewsGroups = try? JSONDecoder().decode(VKResponse<VKNewsGroups>.self, from: data)
+                    vkResponseNewsGroups = try? JSONDecoder().decode(VKResponse<VKNewsGroups>.self, from: data)
                 }
+                
+                let nextGroupFrom = try? JSONDecoder().decode(VKResponse<VKNextGroupOfNews>.self, from: data)
                 
                 self.dispGroup.notify(queue: .main) {
-                completion(self.vkResponseNewsItems,
-                           self.vkResponseNewsProfiles,
-                           self.vkResponseNewsGroups)
+                completion(vkResponseNewsItems,
+                           vkResponseNewsProfiles,
+                           vkResponseNewsGroups,
+                           nextGroupFrom)
             }
                 
             }

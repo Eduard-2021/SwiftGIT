@@ -36,6 +36,7 @@ class QuickTransitionControl : UIControl {
             button.backgroundColor = .systemGray3
             button.setTitle(String(firstCharacter), for: [])
             button.setTitleColor(.white, for: [])
+            button.titleLabel?.backgroundColor = .systemGray3
             button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 11)
             button.addTarget(self, action: #selector(selectSection), for: .touchUpInside)
             
@@ -68,6 +69,7 @@ class QuickTransitionControl : UIControl {
         stackView.spacing = 5.0
         
         addSubview(stackView)
+        
     }
     
     override func layoutSubviews() {

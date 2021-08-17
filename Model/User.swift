@@ -29,3 +29,4 @@ var friends : [User] = []
 var numberOfFriends = 0
 
 
+

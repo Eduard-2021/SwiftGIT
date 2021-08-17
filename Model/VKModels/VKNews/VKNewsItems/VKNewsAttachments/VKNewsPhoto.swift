@@ -12,6 +12,7 @@ struct VKNewsPhoto  {
     var text: String = ""
     var date: Double = 0
     var sizes = [SizeVKNewsPhoto]()
+    var aspectRatio: Double = 1
 }
 
 //extension VKNewsPhoto: Decodable {

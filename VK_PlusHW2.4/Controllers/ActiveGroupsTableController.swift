@@ -39,9 +39,13 @@ class ActiveGroupsTableController: UITableViewController, UISearchBarDelegate {
             else {return}
         
         let newGroup = RealmActiveGroups()
-        newGroup.idGroup = allGroupsTableController.allGroupsInRealm![indexPath.row].idGroup
-        newGroup.imageGroupURL = allGroupsTableController.allGroupsInRealm![indexPath.row].imageGroupURL
-        newGroup.nameGroup = allGroupsTableController.allGroupsInRealm![indexPath.row].nameGroup
+//        newGroup.idGroup = allGroupsTableController.allGroupsInRealm![indexPath.row].idGroup
+//        newGroup.imageGroupURL = allGroupsTableController.allGroupsInRealm![indexPath.row].imageGroupURL
+//        newGroup.nameGroup = allGroupsTableController.allGroupsInRealm![indexPath.row].nameGroup
+        
+        newGroup.idGroup = allGroupsTableController.allGroupsForAdapter[indexPath.row].idGroup
+        newGroup.imageGroupURL = allGroupsTableController.allGroupsForAdapter [indexPath.row].imageGroupURL
+        newGroup.nameGroup = allGroupsTableController.allGroupsForAdapter[indexPath.row].nameGroup
         
         if !usersGroupsInRealm!.contains(newGroup) {
             try? RealmService.save(items: [newGroup])

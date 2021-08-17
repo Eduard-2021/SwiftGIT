@@ -43,7 +43,7 @@ class FriendInfoCollectionController: UICollectionViewController {
               let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FotoCollectionViewCell", for: indexPath) as? FotoCollectionViewCell
         else {return}
         
-        cell.FotoOfFriend.isHidden = true
+        cell.photoOfFriend.isHidden = true
         collectionView.reloadData()
         
         FriendInfoCollectionController.pozitionCellForAnimation = collectionView.convert(cell.frame.origin, to: window)
@@ -83,24 +83,46 @@ class FriendInfoCollectionController: UICollectionViewController {
     override func viewDidLoad() {
         let cellName = UINib(nibName: "FotoCollectionViewCell", bundle: nil)
         collectionView.register(cellName, forCellWithReuseIdentifier: "FotoCollectionViewCell")
-        loadPhotoFromRealm()
+        loadPhotoInRealm()
         updateCollectioViewFromRealm()
         
     }
     
-    private func loadPhotoFromRealm() {
+    private func loadPhotoInRealm() {
         for value in users! {
-            networkService.getAllPhotos(userId: String(value.id)) {[weak self] vkFriendsPhoto in
-                guard
-                    let vkPhotos = vkFriendsPhoto
-                else { return }
-                var vkPhotosWithNumber = [RealmUserPhoto]()
-                for (index,value) in vkPhotos.enumerated() {
-                    vkPhotosWithNumber.append(value)
-                    vkPhotosWithNumber[index].serialNumberPhoto = index
-                }
-                try? RealmService.save(items: vkPhotosWithNumber)
-            }
+            let mainOperation = OperationQueue()
+            let getPhotosOperation = GetPhotosOperation(userId: String(value.id))
+            
+            let parsingPhotoOperation = ParsingPhotosOperation()
+            parsingPhotoOperation.addDependency(getPhotosOperation)
+            
+            let convertInRealmTypeOperation = ConvertInRealmTypeOperation()
+            convertInRealmTypeOperation.addDependency(parsingPhotoOperation)
+            
+            //Если следующие 3 mainOperation.addOperation закоментироать и раскоментировать mainOperation.addOperations, то будет ошибка
+            mainOperation.addOperation(getPhotosOperation)
+            mainOperation.addOperation(parsingPhotoOperation)
+            mainOperation.addOperation(convertInRealmTypeOperation)
+            
+//            mainOperation.addOperations([getPhotosOperation, parsingPhotoOperation, convertInRealmTypeOperation, ], waitUntilFinished: true)
+            
+            var ttt = 0 //добавлено чтобы создать requests
+            
+            let savePhotoToRealmOperation = SavePhotoToRealmOperation()
+            savePhotoToRealmOperation.addDependency(convertInRealmTypeOperation)
+            OperationQueue.main.addOperation(savePhotoToRealmOperation)
+            
+//            networkService.getAllPhotos(userId: String(value.id)) {[weak self] vkFriendsPhoto in
+//                guard
+//                    let vkPhotos = vkFriendsPhoto
+//                else { return }
+//                var vkPhotosWithNumber = [RealmUserPhoto]()
+//                for (index,value) in vkPhotos.enumerated() {
+//                    vkPhotosWithNumber.append(value)
+//                    vkPhotosWithNumber[index].serialNumberPhoto = index
+//                }
+//                try? RealmService.save(items: vkPhotosWithNumber)
+//            }
         }
     }
     

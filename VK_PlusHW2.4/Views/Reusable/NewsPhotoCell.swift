@@ -10,10 +10,10 @@ import UIKit
 class NewsPhotoCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     private var numberOfItemsInSection = 0
+    private var currentNews: OneNews!
     private var photosOfOneAttachment = [SizeVKNewsPhoto]()
     private var videoImageURL = ""
 
-    @IBOutlet weak var conststrainForCollection: NSLayoutConstraint!
     @IBOutlet weak var newsCollectionView: UICollectionView! {
         didSet {
             newsCollectionView.dataSource = self
@@ -25,15 +25,9 @@ class NewsPhotoCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        conststrainForCollection.constant = 0
         let cellName = UINib(nibName: "NewsCollectionViewCell", bundle: nil)
         newsCollectionView.register(cellName, forCellWithReuseIdentifier: "NewsCollectionViewCell")
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         numberOfItemsInSection
@@ -41,14 +35,21 @@ class NewsPhotoCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        conststrainForCollection.constant = 0
-        if (((indexPath.row != 0) && (indexPath.row % 3 == 0)) || numberOfItemsInSection == 1) && photosOfOneAttachment.count != 0 {
-            conststrainForCollection.constant = newsCollectionView.frame.size.width
-            return CGSize(width: newsCollectionView.frame.size.width - 7, height: newsCollectionView.frame.size.width - 7)
+        if (((numberOfItemsInSection - 2) % 4 == 0)||((numberOfItemsInSection - 1) % 4 == 0)) && ((indexPath.row == numberOfItemsInSection-1) || (indexPath.row == numberOfItemsInSection-2)) && numberOfItemsInSection != 1  {
+            return CGSize(width: newsCollectionView.frame.size.width/2 - 7, height: newsCollectionView.frame.size.width/2 - 7)
+        }
+        else
+        if (((indexPath.row != 0) && ((indexPath.row+1) % 4 == 0)) || numberOfItemsInSection == 1) && photosOfOneAttachment.count != 0 {
+            var proportion = 1.0
+            for (index,value) in currentNews.attachments.enumerated() {
+                if (value.type == "photo") && (index==indexPath.row) {
+                    proportion = value.attachmentVKPhoto.photo.aspectRatio
+                }
+            }
+            return CGSize(width: newsCollectionView.frame.size.width - 7, height:CGFloat( Double(newsCollectionView.frame.size.width)*proportion - 7))
         }
         else
             if photosOfOneAttachment.count != 0 {
-                conststrainForCollection.constant = newsCollectionView.frame.size.width/3 + 20
                 return CGSize(width: newsCollectionView.frame.size.width/3 - 7, height: newsCollectionView.frame.size.width/3 - 7)
             }
         return CGSize.zero
@@ -75,16 +76,15 @@ class NewsPhotoCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
         numberOfItemsInSection = currentNews.attachments.count
         photosOfOneAttachment = []
         videoImageURL = ""
-//        if currentNews.date == 1626276759 {
-//            var ttt = 0
-//        }
-        
+        separatorInset.left = contentView.frame.size.width
+        self.currentNews = currentNews
+
         if numberOfItemsInSection != 0 {
             for value in currentNews.attachments {
                 switch value.type {
                 case "photo":
                     let sortedPhotosBySize = value.attachmentVKPhoto.photo.sizes.sorted(by: {$0.height < $1.height})
-                    if ((photosOfOneAttachment.count != 0) && (photosOfOneAttachment.count % 3 == 0)) || numberOfItemsInSection == 1 {
+                    if ((photosOfOneAttachment.count != 0) && ((photosOfOneAttachment.count+1) % 4 == 0)) || numberOfItemsInSection == 1 {
                         photosOfOneAttachment.append(sortedPhotosBySize.last!)
                     }
                     else {
@@ -92,13 +92,10 @@ class NewsPhotoCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
                     }
                 case "link":
                     numberOfItemsInSection -= 1
-                    if photosOfOneAttachment.count == 0 {conststrainForCollection.constant = 0}
                 case "video":
-                    if photosOfOneAttachment.count == 0 {conststrainForCollection.constant = 0}
                     videoImageURL = value.attachmentVKVideo.video.image.url
                 case "audio":
                     numberOfItemsInSection -= 1
-                    if photosOfOneAttachment.count == 0 {conststrainForCollection.constant = 0}
 
                 default:
                     return

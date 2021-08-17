@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FriendAndGroupsHeader: UITableViewHeaderFooterView {
+class FriendAndGroupsAndNewsHeader: UITableViewHeaderFooterView {
 
     private let myLabel : UILabel = {
         let label = UILabel()
@@ -46,9 +46,9 @@ class FriendAndGroupsHeader: UITableViewHeaderFooterView {
         makeGradient(myView)
     }
     
-    func configure(with text : String){
+    func configure(with text : String, colorOfCell : UIColor = UIColor.systemBlue){
         myLabel.text = text
-        myView.backgroundColor = UIColor.systemBlue
+        myView.backgroundColor = colorOfCell
     }
     
     override func layoutSubviews() {

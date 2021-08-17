@@ -7,11 +7,11 @@
 
 import UIKit
 
-@IBDesignable class AvatarImage: UIImageView {
+class AvatarImage: UIImageView {
 
-    @IBInspectable var borderColor: UIColor = .darkGray
-    @IBInspectable var borderWidth: CGFloat = 1.5
-    @IBInspectable var cornerRadius: CGFloat = 40
+var borderColor: UIColor = .darkGray
+var borderWidth: CGFloat = 1.5
+var cornerRadius: CGFloat = 40
     
     override func awakeFromNib() {
         self.layer.cornerRadius = cornerRadius

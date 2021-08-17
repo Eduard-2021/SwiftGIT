@@ -6,5 +6,5 @@
 //
 
 struct VKNewsGroups: Codable {
-    let groups: [OneVKGroup]
+    var groups: [VKGroup]
 }

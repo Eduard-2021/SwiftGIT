@@ -98,9 +98,9 @@
             </constraints>
             <size key="customSize" width="200" height="250"/>
             <connections>
-                <outlet property="FotoOfFriend" destination="fLb-h4-Nd8" id="t2c-ga-isc"/>
                 <outlet property="buttonLikeColor" destination="WVG-Bk-EDc" id="V3I-ku-3dk"/>
                 <outlet property="numberLikes" destination="ecM-ch-sEs" id="wWG-CR-Gs4"/>
+                <outlet property="photoOfFriend" destination="fLb-h4-Nd8" id="YBJ-RP-FSw"/>
                 <outlet property="serNumberPhoto" destination="yGB-cm-FFL" id="tl9-Np-nK8"/>
                 <outlet property="serNumberUser" destination="Mgh-Wj-6c1" id="BRK-94-21C"/>
             </connections>

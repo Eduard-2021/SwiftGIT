@@ -6,16 +6,16 @@
 //
 
 struct OneVKGroup {
-    let id: Int
-    let name: String
-    let photoURL: String
+    var id: Int
+    var name: String
+    var photoURL: String
 }
 
 extension OneVKGroup: Codable {
     enum CodingKeys: String, CodingKey {
         case id
         case name
-        case photoURL = "photo_50"
+        case photoURL = "photo_200"
     }
 }
 
