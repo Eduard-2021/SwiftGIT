@@ -52,7 +52,8 @@ import UIKit
                 updateStartPoint()
             }
         }
-        @IBInspectable var endPoint : CGPoint = CGPoint(x: 1, y: 0) {
+    //Использование паттерна Flyweight в CGPoint для создания координаты (1,0)
+    @IBInspectable var endPoint : CGPoint = .oneXzeroY {
             didSet {
                 updateEndPoint()
             }

@@ -16,6 +16,7 @@ class NewsTableViewController: UITableViewController, DelegeteForChangeSizeNewsC
     let showMoreOrLessCell = ShowMoreOrLessCell()
     
     private let networkService = MainNetworkService()
+    private let networkServiceProxy = MainNetworkServiceProxy(mainNetworkService: MainNetworkService())
     private let currentTime = Date().timeIntervalSince1970
     private let durationOneDay : Double = 60*60*24
     private var nextGroupNews = ""
@@ -40,7 +41,7 @@ class NewsTableViewController: UITableViewController, DelegeteForChangeSizeNewsC
     }
     
     private func getNewsFromNet(){
-        networkService.getNews(startTime: currentTime-durationOneDay, endTime: currentTime-7200) { [weak self] (vkResponseItems,vkResponsePRofiles,vkResponseGroups, vkResponseNextGroup) in
+        networkServiceProxy.getNews(startTime: currentTime-durationOneDay, endTime: currentTime-7200) { [weak self] (vkResponseItems,vkResponsePRofiles,vkResponseGroups, vkResponseNextGroup) in
             guard let itemsVKUnwrapped = vkResponseItems?.response.items,
                   let nextGroup = vkResponseNextGroup,
                   let self=self
@@ -104,7 +105,7 @@ class NewsTableViewController: UITableViewController, DelegeteForChangeSizeNewsC
         }
         if !groupsIDs.isEmpty {
             groupsIDs.removeLast()
-            networkService.getGroupsOfNews(groupsIDs: groupsIDs, completion: { [weak self] vkResponse in
+            networkServiceProxy.getGroupsOfNews(groupsIDs: groupsIDs, completion: { [weak self] vkResponse in
                 guard let groupsOfNews = vkResponse?.response else {return}
                 var groupsOfNewsDict = [Int:VKGroup]()
                 for value in groupsOfNews {groupsOfNewsDict[value.idGroup] = value}
@@ -118,7 +119,7 @@ class NewsTableViewController: UITableViewController, DelegeteForChangeSizeNewsC
         }
         if !usersIDs.isEmpty {
             usersIDs.removeLast()
-            networkService.getUsersOfNews(usersIDs: usersIDs, completion: { [weak self] vkResponse in
+            networkServiceProxy.getUsersOfNews(usersIDs: usersIDs, completion: { [weak self] vkResponse in
                 guard let usersOfNews = vkResponse?.response else {return}
                 var usersOfNewsDict = [Int:VKUser]()
                 for value in usersOfNews {usersOfNewsDict[value.idUser] = value}
@@ -155,7 +156,7 @@ class NewsTableViewController: UITableViewController, DelegeteForChangeSizeNewsC
     @objc func refreshNews(){
             tableView.refreshControl?.beginRefreshing()
             let mostFreshNewsDate = newsVK.first?.date ?? currentTime
-            networkService.getNews(startTime: mostFreshNewsDate + 1) { [weak self] (vkResponseItems,vkResponsePRofiles,vkResponseGroups, vkResponseNextGroup ) in
+            networkServiceProxy.getNews(startTime: mostFreshNewsDate + 1) { [weak self] (vkResponseItems,vkResponsePRofiles,vkResponseGroups, vkResponseNextGroup ) in
                 guard var newsVKUnwrapped = vkResponseItems?.response.items,
                       let self=self
                 else {return}
@@ -302,7 +303,9 @@ class NewsTableViewController: UITableViewController, DelegeteForChangeSizeNewsC
             cellNews = cell
         case 4:
             let cell = tableView.dequeueReusableCell(withIdentifier: "NewsLikesCellSnapKit", for: indexPath) as! NewsLikesCellSnapKit
-            cell.config(currentNews: currentNews, index: indexPath.section)
+            //Создание с помощью Symple Factory свойства со всеми необходимыми данными, преобразоваными в простой формат, для конфигурирования ячейки
+            let currentNewsAndIndex = NewsLikesViewModelFactory().constructViewModels(from: currentNews, and: indexPath.section)
+            cell.config(currentNewsAndIndex: currentNewsAndIndex)
             cellNews = cell
             
         default : break
@@ -344,7 +347,7 @@ extension NewsTableViewController: UITableViewDataSourcePrefetching {
        if maxSection > newsVK.count - 6,
            !isLoading {
            isLoading = true
-        networkService.getNews(startTime: currentTime-durationOneDay, nextGroup: nextGroupNews)
+        networkServiceProxy.getNews(startTime: currentTime-durationOneDay, nextGroup: nextGroupNews)
         { [weak self] (vkResponseItems,vkResponsePRofiles,vkResponseGroups, vkResponseNextGroup ) in
                guard let self = self,
                      let newsVKUnwrapped = vkResponseItems?.response.items,

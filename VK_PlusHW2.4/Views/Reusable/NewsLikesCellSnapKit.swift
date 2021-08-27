@@ -175,22 +175,14 @@ class NewsLikesCellSnapKit: UITableViewCell {
         }
     }
     
-        
-        func config(currentNews: OneNews, index: Int) {
-            indexNews = index
-            newsNumberOfLikes.text = String(currentNews.likes.count)
-            newsNumberOfViews.text = String(currentNews.views.count)
-            newsNumberOfComments.text = String(currentNews.comments.count)
-            newsNumberOfReposts.text = String(currentNews.reposts.count)
-            section.text = String(index)
-            if currentNews.likes.userLikes == 1 {
-                newsButtonLikesImage.tintColor = .red
-                newsButtonLikesImage.setBackgroundImage(UIImage(systemName: "heart.fill")!, for: .normal)
-            }
-            else {
-                newsButtonLikesImage.tintColor = .systemGray2
-                newsButtonLikesImage.setBackgroundImage(UIImage(systemName: "heart")!, for: .normal)
-            }
-            
-        }
+    func config(currentNewsAndIndex: NewsLikesViewModel) {
+        indexNews = currentNewsAndIndex.indexNews
+        newsNumberOfLikes.text = currentNewsAndIndex.newsNumberOfLikes
+        newsNumberOfViews.text = currentNewsAndIndex.newsNumberOfViews
+        newsNumberOfComments.text = currentNewsAndIndex.newsNumberOfComments
+        newsNumberOfReposts.text = currentNewsAndIndex.newsNumberOfReposts
+        section.text = currentNewsAndIndex.section
+        newsButtonLikesImage.tintColor = currentNewsAndIndex.tintColor
+        newsButtonLikesImage.setBackgroundImage(UIImage(systemName: currentNewsAndIndex.systemName)!, for: .normal)
+    }
     }
