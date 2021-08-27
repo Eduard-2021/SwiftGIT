@@ -11,6 +11,8 @@ import RealmSwift
 class ActiveGroupsTableController: UITableViewController, UISearchBarDelegate {
     
     private let networkService = MainNetworkService()
+    private let networkServiceProxy = MainNetworkServiceProxy(mainNetworkService: MainNetworkService())
+    
     var usersGroupsInRealm = try? RealmService.load(typeOf: RealmActiveGroups.self, sortedKey: "idGroup")
     var usersGroupsInRealmOrigin = try? RealmService.load(typeOf: RealmActiveGroupsOrigin.self, sortedKey: "idGroup")
     var token: NotificationToken?
@@ -39,9 +41,13 @@ class ActiveGroupsTableController: UITableViewController, UISearchBarDelegate {
             else {return}
         
         let newGroup = RealmActiveGroups()
-        newGroup.idGroup = allGroupsTableController.allGroupsInRealm![indexPath.row].idGroup
-        newGroup.imageGroupURL = allGroupsTableController.allGroupsInRealm![indexPath.row].imageGroupURL
-        newGroup.nameGroup = allGroupsTableController.allGroupsInRealm![indexPath.row].nameGroup
+//        newGroup.idGroup = allGroupsTableController.allGroupsInRealm![indexPath.row].idGroup
+//        newGroup.imageGroupURL = allGroupsTableController.allGroupsInRealm![indexPath.row].imageGroupURL
+//        newGroup.nameGroup = allGroupsTableController.allGroupsInRealm![indexPath.row].nameGroup
+        
+        newGroup.idGroup = allGroupsTableController.allGroupsForAdapter[indexPath.row].idGroup
+        newGroup.imageGroupURL = allGroupsTableController.allGroupsForAdapter [indexPath.row].imageGroupURL
+        newGroup.nameGroup = allGroupsTableController.allGroupsForAdapter[indexPath.row].nameGroup
         
         if !usersGroupsInRealm!.contains(newGroup) {
             try? RealmService.save(items: [newGroup])
@@ -141,7 +147,7 @@ class ActiveGroupsTableController: UITableViewController, UISearchBarDelegate {
     }
     
     private func loadUserGroupsInRealm() {
-            networkService.getGroupsOfUser(userId: DataAboutSession.data.userID) {[weak self] userGroupsVK, userGroupsVKOrigin in
+            networkServiceProxy.getGroupsOfUser(userId: DataAboutSession.data.userID) {[weak self] userGroupsVK, userGroupsVKOrigin in
                 guard
                     let vkUserGroups = userGroupsVK,
                     let vkUserGroupsOrigin = userGroupsVKOrigin

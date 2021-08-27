@@ -16,7 +16,8 @@ public func makeGradient(_ cell : Any) {
     let startLocation : CGFloat = 0
     let endLocation : CGFloat = 1
     let startPoint : CGPoint = CGPoint(x: -0.5, y: 0)
-    let endPoint : CGPoint = CGPoint(x: 1, y: 0)
+    //Использование паттерна Flyweight в CGPoint для создания координаты (1,0)
+    let endPoint : CGPoint = .oneXzeroY
     
     gradientLayer.locations = [startLocation as NSNumber, endLocation as NSNumber]
     gradientLayer.colors = [startColor.cgColor, endColor.cgColor]
